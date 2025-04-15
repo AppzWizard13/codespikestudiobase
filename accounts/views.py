@@ -181,6 +181,8 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 # Home Page View
 class HomePageView(TemplateView):
+    
+
     template_name = "index.html"
 
     def get_context_data(self, **kwargs):
@@ -191,13 +193,32 @@ class HomePageView(TemplateView):
         banners = Banner.objects.all().order_by('series')
 
         product_list = []
+        category_products = []
         for item in products:
-            top_products = Product.objects.filter(category=item['category']).order_by('-price')[:4]
-            product_list.extend(top_products)
+            product_list = Product.objects.filter(category=item['category']).order_by('price')[:4]
+
+
+        # Step 1: Fetch all products with valid category (ForeignKey)
+        all_products = Product.objects.select_related('category').filter(category__isnull=False).order_by('-category__name', 'price')
+        from collections import defaultdict
+        # Step 2: Group by category object (not string)
+        grouped = defaultdict(list)
+
+        for product in all_products:
+            category_obj = product.category
+            if len(grouped[category_obj]) < 8:
+                grouped[category_obj].append(product)
+
+        # Step 3: Prepare context list
+        category_products = [
+            {'category': category, 'products': prods}
+            for category, prods in grouped.items()
+        ]
+
 
         category_data = {}
         for category in total_categories:
-            products = category.products.filter(is_active=True).values('id', 'name', 'price')[:4]
+            products = category.products.filter(is_active=True).distinct().values('id', 'name', 'price')[:4]
             category_data[category.id] = list(products)
 
         context.update({
@@ -207,6 +228,7 @@ class HomePageView(TemplateView):
             'products': product_list,
             'category_data': category_data,
             'banners': banners,
+            'category_products': category_products
         })
         return context
     
@@ -306,7 +328,7 @@ class FetchProductsView(View):
         products = Product.objects.filter(
             category_id=category_id, 
             is_active=True
-        ).values('id', 'name', 'price')
+        ).values('id', 'name', 'price', 'sku')
         return JsonResponse(list(products), safe=False)
 
 

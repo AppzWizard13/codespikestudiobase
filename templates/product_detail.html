@@ -30,6 +30,7 @@
 
 
         <div class="row">
+
             <!-- Main Image Section -->
             <div class="col-md-6 ftco-animate">
                 <div class="blog-entry align-self-stretch">
@@ -40,23 +41,28 @@
                 <!-- Additional Images (Thumbnails) -->
                 <div class="row mt-3 justify-content-center">
                     {% if product.images %}
-                        <div class="col-3">
+                        <div class="col-2">
                             <img src="{{ product.images.url }}" class="img-fluid thumbnail-image active-thumbnail" onclick="changeImage(this)">
                         </div>
                     {% endif %}
                     {% if product.image_1 %}
-                        <div class="col-3">
+                        <div class="col-2">
                             <img src="{{ product.image_1.url }}" class="img-fluid thumbnail-image" onclick="changeImage(this)">
                         </div>
                     {% endif %}
                     {% if product.image_2 %}
-                        <div class="col-3">
+                        <div class="col-2">
                             <img src="{{ product.image_2.url }}" class="img-fluid thumbnail-image" onclick="changeImage(this)">
                         </div>
                     {% endif %}
                     {% if product.image_3 %}
-                        <div class="col-3">
+                        <div class="col-2">
                             <img src="{{ product.image_3.url }}" class="img-fluid thumbnail-image" onclick="changeImage(this)">
+                        </div>
+                    {% endif %}
+                    {% if product.image_4 %}
+                        <div class="col-2">
+                            <img src="{{ product.image_4.url }}" class="img-fluid thumbnail-image" onclick="changeImage(this)">
                         </div>
                     {% endif %}
                 </div>
@@ -87,7 +93,7 @@
                         <button id="add-to-cart-btn" 
                             data-product-sku="{{ product.sku }}" 
                             class="btn btn-primary"
-                            style="background: green; border: 1px solid #2cf724; color: white; 
+                            style="background: green; color: white; 
                                 --bs-btn-hover-bg: green; --bs-btn-hover-border-color: #2cf724; --bs-btn-hover-color: white;">
                             Add to Cart
                         </button>
@@ -98,7 +104,7 @@
                     <!-- WhatsApp Button -->
                     <a href="https://wa.me/+919940100506?text=Hi, I am interested in your product: {{ product.name }}. Price: {{ product.price }}, Category: {{ product.category.name }}{% if product.subcategory %}, Subcategory: {{ product.subcategory.name }}{% endif %}. Additional Information: {{ product.additional_information }}. Product UID: {{ product.product_uid }}" 
                        class="btn btn-primary mt-3 whatsapp-btn" 
-                       style="background: green; border: 1px solid #2cf724; color: white; --bs-btn-hover-bg: green; --bs-btn-hover-border-color: #2cf724; --bs-btn-hover-color: white;">
+                       style="background: green;  color: white; --bs-btn-hover-bg: green; --bs-btn-hover-border-color: #2cf724; --bs-btn-hover-color: white;">
                        Contact Supplier via WhatsApp
                     </a>
                     <style>
@@ -174,11 +180,11 @@
             <div class="product-grid">
                 {% for item in  same_subcategory_products %}
                     <div class="blog-entry">
-                        <a href="{% url 'product_detail' item.id %}" class="block-20">
+                        <a href="{% url 'product_detail' item.sku %}" class="block-20">
                             <img src="{{ item.images.url|default:'/static/images/placeholder.jpg' }}" class="product-image">
                         </a>
                         <div class="text">
-                            <h3 class="heading"><a href="{% url 'product_detail' item.id %}">{{ item.name }}</a></h3>
+                            <h3 class="heading"><a href="{% url 'product_detail' item.sku %}">{{ item.name }}</a></h3>
                             <p><strong>Price:</strong> ₹{{ item.price }}</p>
                         </div>
                     </div>
@@ -197,11 +203,11 @@
             <div class="product-grid">
                 {% for item in same_category_products %}
                     <div class="blog-entry">
-                        <a href="{% url 'product_detail' item.id %}" class="block-20">
+                        <a href="{% url 'product_detail' item.sku %}" class="block-20">
                             <img src="{{ item.images.url|default:'/static/images/placeholder.jpg' }}" class="product-image">
                         </a>
                         <div class="text">
-                            <h3 class="heading"><a href="{% url 'product_detail' item.id %}">{{ item.name }}</a></h3>
+                            <h3 class="heading"><a href="{% url 'product_detail' item.sku %}">{{ item.name }}</a></h3>
                             <p><strong>Price:</strong> ₹{{ item.price }}</p>
                         </div>
                     </div>

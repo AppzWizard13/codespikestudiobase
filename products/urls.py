@@ -33,7 +33,7 @@ urlpatterns = [
 
     # Frontend Views
     path('products-grid/', ProductGridView.as_view(), name='product_grid_view'),
-    path('products/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
+    path('products/<slug:sku>/', ProductDetailView.as_view(), name='product_detail'),
     path('category/<int:category_id>/', ProductGridView.as_view(), name='products_by_category'),
 
     # API View

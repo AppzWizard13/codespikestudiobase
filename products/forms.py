@@ -43,11 +43,12 @@ class ProductForm(forms.ModelForm):
     image_1 = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
     image_2 = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
     image_3 = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
+    image_4 = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Product
         fields = [
-            'name', 'is_active', 'images', 'image_1', 'image_2', 'image_3', 'catalogues','sku', 
+            'name', 'is_active', 'images', 'image_1', 'image_2', 'image_3','image_4' ,'catalogues','sku', 
             'category', 'price', 'subcategory', 'specifications', 'description', 'additional_information','country_of_origin'
         ]
         widgets = {

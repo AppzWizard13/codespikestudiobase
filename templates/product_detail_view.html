@@ -54,7 +54,7 @@
         <div class="container-fluid">
           <div class="row justify-content-center pt-5">
             <div class="col-md-7 heading-section text-center">
-              <h2>Check our Products here</h2>
+              <h2>Check our Designs here</h2>
             </div>
           </div>
 
@@ -62,16 +62,16 @@
         <div class="product-grid">
           {% for product in products %}
           <div class="blog-entry d-flex flex-column">
-            <a href="{% url 'product_detail' product.id %}" class="block-20">
-              <img src="{{ product.images.url|default:'/static/images/placeholder.jpg' }}" 
+            <a href="{% url 'product_detail' product.sku %}" class="block-20">
+              <img src="{{ product.images.url|default:'/static/images/placeholder.jpg' }}" 2222
                 alt="{{ product.name }}" class="product-image">
             </a>
             <div class="text d-flex flex-column flex-grow-1 justify-content-between p-3">
               <h3 class="heading text-center">
-                <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+                <a href="{% url 'product_detail' product.sku %}">{{ product.name }}</a>
               </h3>
-              <p class="text-muted text-center flex-grow-1">{{ product.description|truncatewords:8 }}</p>
-              <p class="text-center font-weight-bold mt-auto"><strong>Price:</strong> ₹{{ product.price }}</p>
+              {% comment %} <p class="text-muted text-center flex-grow-1">{{ product.description|truncatewords:8 }}</p> {% endcomment %}
+              <p class="text-center font-weight-bold mt-auto"  style="margin-top:-25px!important"><strong>Price:</strong> ₹{{ product.price }}</p>
             </div>
           </div>
           {% empty %}
@@ -136,7 +136,7 @@
     flex-direction: column;
     height: 100%;
     background: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;

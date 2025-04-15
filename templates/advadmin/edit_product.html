@@ -189,6 +189,28 @@
                     </div>
                   </div>
                 </div>
+
+
+                <div class="col-md-4 mb-3">
+                  <div class="image-upload-card">
+                    <label class="form-label">Image 5</label>
+                    <div class="image-upload-wrapper">
+                      <input type="file" class="form-control" name="image_4" accept="image/*" onchange="previewImage(this, 'previewImage4')">
+                      <div class="image-preview mt-2">
+                        {% if form.instance.image_4 %}
+                          <img src="{{ form.instance.image_4.url }}" class="img-thumbnail" id="previewImage4">
+                          <button type="button" class="btn btn-sm btn-danger remove-image" data-target="image_4" data-preview="previewImage4">
+                            <i class="bx bx-trash"></i>
+                          </button>
+                        {% else %}
+                          <img src="" class="img-thumbnail" id="previewImage4" style="display: none;">
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
               </div>
           </div>
           <style>

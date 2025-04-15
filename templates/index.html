@@ -36,7 +36,7 @@
 			width: 100%; /* Adjust width to compensate for the scale */
 			height: 90%;
 			transform-origin: top left; /* Ensure the scaling starts from the top-left corner */
-			zoom: 0.8; 
+			{% comment %} zoom: 0.8;  {% endcomment %}
 			margin: 0; /* Remove default margin */
 			overflow: auto; /* Prevent scrollbars from appearing */
 			margin-bottom: -1437px;
@@ -164,13 +164,13 @@
 			color: white !important;
 			font-weight: bold;
 			padding: 12px 24px;
-			border-radius: 4px;
+			border-radius: 10px;
 			text-transform: uppercase;
 			transition: all 0.3s ease-in-out;
 			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 		}
 		.services .icon {
-			background: var(--charcoal-dark) !important;
+			background: #f9f9f9 !important;
 		}
 		.bg-intro{
 			background: var(--charcoal-dark) !important;
@@ -241,7 +241,7 @@
 		/* Product Card */
 		.blog-entry {
 			color: var(--charcoal-dark);
-			border-radius: 5px !important;
+			border-radius: 10px !important;
 			overflow: hidden !important;
 			transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out !important;
 			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
@@ -405,20 +405,20 @@
 		/* Tab Content */
 		.tab-content {
 			border-radius: 10px !important;
-			background: #181818 !important;
-			color: #d1d1d1 !important;
+			background: white !important;
+			color: black !important;
 			padding: 20px !important;
 			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3) !important;
 		}
 		
 		.tab-content-inner p {
 			font-size: 14px !important;
-			color: #d1d1d1 !important;
+			color: black !important;
 		}
 		
 		.tab-content-inner ul li {
 			font-size: 14px !important;
-			color: #ffffff !important;
+			color: black !important;
 			margin-bottom: 8px !important;
 		}
 		
@@ -437,7 +437,7 @@
 			flex-direction: column;
 			height: 100%;
 			background: #fff;
-			border-radius: 8px;
+			border-radius: 10px;
 			overflow: hidden;
 			box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
 			transition: transform 0.3s ease-in-out;
@@ -518,7 +518,15 @@
 				margin-right: 90px !important;
 			}
 		}
-	
+		.searchform .form-control:focus, .searchform .form-control:active{
+			border-radius: 10px !important;
+		}
+		.searchform .form-control:focus, .searchform .form-control{
+			border-radius: 10px !important;
+		}
+		.searchform .form-control {
+			border-radius: 10px !important;
+		}
 
 	</style> 
 	
@@ -574,7 +582,7 @@
 							  <!-- Hidden Image (Will be shown after loading) -->
 							  <img id="company-logo-svg" 
 								   alt="Company Logo" 
-								   style="width: 185px; height: 65px; object-fit: contain; display: none;" />
+								   style="width: 200px; height: 75px; object-fit: contain; display: none;  margin-left: -20px;" />
 							</span>
 						  </a>
 						  <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -587,12 +595,12 @@
 							<div class="col">
 								<div class="top-wrap d-flex">
 									<div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-location-arrow"></span></div>
-									<div class="text"><span>Address</span><span>Neelikonampalayam, Coimbatore, Tamil Nadu 641033, India</span></div>
+									<div class="text"><span>Address</span><span>11/03 2nd Floor Ksum, Kochin, Kerala 641033, India</span></div>
 								</div>
 							</div>
 							<div class="col">
 								<div class="top-wrap d-flex">
-									<div class="text"><span>Call us</span><span>(+91) 099401 00506</span></div>
+									<div class="text"><span>Call us</span><span>(+91) 77365 00760</span></div>
 								</div>
 								<div class="top-wrap d-flex">
 									<div class="text"><span>GSTIN</span><span>33BHTPR6598F1ZI</span></div>
@@ -926,11 +934,11 @@
 					method: 'GET',
 					success: function (response) {
 						if (!response || response.length === 0) {
-							$container.html('<div class="dropdown-item py-2 text-muted">No products found</div>');
+							$container.html('<div class="dropdown-item py-2 text-muted">Coming Soon</div>');
 							return;
 						}
 						let items = response.map(product => `
-							<a class="dropdown-item py-2" href="/products/${product.id}/">
+							<a class="dropdown-item py-2" href="/products/${product.sku}/">
 								${product.name}
 					  
 							</a>
@@ -1327,9 +1335,10 @@
 					<div class="col-md-12 col-lg-9 bg-intro d-sm-flex align-items-center align-items-stretch" >
 						<div class="intro-box d-flex align-items-center" style="color:grey; background: #202020;">
 							<div class="icon d-flex align-items-center justify-content-center">
-								<i class="flaticon-repair"></i>
+								{% comment %} <i class="flaticon-repair"></i> {% endcomment %}
+								<i class="fa-solid fa-laptop-code"></i>
 							</div>
-							<h2 class="mb-0" style="color:grey !important;">Are you ready? <span style="color:green;"> &nbsp;Let's repair it now!</span></h2>
+							<h2 class="mb-0" style="color:lightgrey !important;">Dream it in your mind?<span style="color:lightgreen;"> &nbsp;Let’s make it online!</span></h2>
 						</div>
 						<a href="https://pdf.indiamart.com/impdf/23953284097/136190013/sapet-tyre-changer.pdf" class="bg-catelogue btn-custom d-flex align-items-center"><span>Get Our Catelogue</span></a>
 					</div>
@@ -1347,17 +1356,19 @@
 			} {% endcomment %}
 			/* Round design for the icon container */
 			/* Make the icon white using CSS filter */
-			.white-icon {
+			{% comment %} .white-icon {
 			  filter: brightness(100) invert(1); /* Converts icon to white */
-			}
+			} {% endcomment %}
 
 			
 			/* Round design for the icon container */
 			.icon {
 			  {% comment %} width: 50px; /* Adjust size of the round container */
-			  height: 50px; /* Adjust size of the round container */
+			  
 			  border-radius: 50%; /* Makes it round */
 			  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */ {% endcomment %}
+			  height: 50px; 
+			  width: 50px; 
 			  padding-inline:5px;
 			  display: flex;
 			  justify-content: center;
@@ -1417,6 +1428,8 @@
 				justify-content: center;
 			}
 
+			
+
 		</style>
 
 		<section class="ftco-section testimony-section bg-light">
@@ -1436,13 +1449,13 @@
 								<img src="{{ category.image.url }}" 
 									 alt="{{ category.name }}" 
 									 class="icon-img white-icon" 
-									 style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;" 
+									 style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;" 
 									 loading="lazy">
 								{% else %}
 								<img src="{% static 'icons/category.png' %}" 
 									 alt="Category Icon" 
 									 class="icon-img white-icon" 
-									 style="width: 50px; height: 50px;" 
+									 style="width: 60px; height: 60px;" 
 									 loading="lazy">
 								{% endif %}
 							</div>
@@ -1472,18 +1485,18 @@
     					</a> {% endcomment %}
     				</div>
     			</div>
-    			<div class="col-md-6 pl-md-5">
-    				<div class="row justify-content-start py-5">
-		          <div class="col-md-12 heading-section ftco-animate">
-					<span class="subheading">Welcome to CODESPIKE STUDIO</span>
-		            <h2 class="mb-4">CODESPIKE STUDIO: Your Trusted Partner for Garage Equipment in India</h2>
-		            <p>At CODESPIKE STUDIO, we take pride in being India’s trusted leader in automotive service equipment. As pioneers in manufacturing, exporting, wholesaling, and supplying premium garage solutions, we are your ultimate one-stop-shop for all garage equipment needs.
-
-						Backed by the legacy of Elgi Equipments Ltd, we’ve earned our reputation through decades of innovation, quality, and affordability. Our curated range of 35+ advanced garage equipment and 150+ specialized tools and accessories empowers garage owners to operate efficiently while minimizing costs.
-
-					</p>
-
-		        </div>
+				<div class="col-md-6 pl-md-5">
+					<div class="row justify-content-start py-5">
+						<div class="col-md-12 heading-section ftco-animate">
+							<span class="subheading">Welcome to CODESPIKE STUDIO</span>
+							<h2 class="mb-4">CODESPIKE STUDIO: Your Trusted Partner for Web Design & Development Solutions</h2>
+							<p>At CODESPIKE STUDIO, we take pride in being a leading startup in the web design and development industry. As a passionate team of developers and designers, we specialize in delivering high-quality, trend-oriented websites for our clients. We offer a wide range of pre-built, visually appealing templates that clients can choose from, ensuring each project reflects their unique brand. 
+				
+							With 16+ satisfied clients, we’re committed to meeting strict timelines while offering personalized attention to each project. Our three-phase UAT process ensures that we deliver exactly what our clients need, all while providing cost-effective solutions to fit any budget.
+							</p>
+						</div>
+					</div>
+				</div>				
 	        </div>
         </div>
     	</div>
@@ -1564,30 +1577,37 @@
 			<div class="row justify-content-center mb-4">
 				<div class="col-md-7 heading-section text-center ftco-animate">
 					<span class="subheading">Our Products</span>
-					<h2>Check our Products here</h2>
+					<h2>Check our Designs here</h2>
 				</div>
 			</div>
 	
+			{% for cat in category_products %}
+			<!-- Category Title -->
+			<h5 class="text-center my-4">{{ cat.category.name }}</h5>
+		
 			<!-- Product Grid -->
-			<div class="product-grid">
-				{% for product in products %}
-				<div class="blog-entry d-flex flex-column">
-					<a href="{% url 'product_detail' product.id %}" class="block-20">
+			<div class="product-grid d-flex flex-wrap justify-content-center mb-5">
+				{% for product in cat.products %}
+				<div class="blog-entry d-flex flex-column m-2" style="width: 250px;">
+					<a href="{% url 'product_detail' product.sku %}" class="block-20">
 						<img src="{{ product.images.url|default:'/static/images/placeholder.jpg' }}" 
-							 alt="{{ product.name }}" class="product-image">
+							 alt="{{ product.name }}" class="product-image img-fluid">
 					</a>
 					<div class="text d-flex flex-column flex-grow-1 justify-content-between p-3">
 						<h3 class="heading text-center">
-							<a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+							<a href="{% url 'product_detail' product.sku %}">{{ product.name }}</a>
 						</h3>
-						<p class="text-muted text-center flex-grow-1">{{ product.description|truncatewords:8 }}</p>
-						<p class="text-center font-weight-bold mt-auto"><strong>Price:</strong> ₹{{ product.price }}</p>
+						<p class="text-center font-weight-bold mt-auto" style="margin-top:-35px!important">
+							<strong>Price:</strong> ₹{{ product.price }}
+						</p>
 					</div>
 				</div>
 				{% empty %}
-				<p class="text-center">No products available.</p>
+				<p class="text-center">No products available in {{ cat.category }}.</p>
 				{% endfor %}
 			</div>
+		{% endfor %}
+		
 		</div>
 	</section>
 	
@@ -2048,7 +2068,7 @@
 		  <div class="row g-4 g-lg-5 mb-5">
 			<!-- Logo and Info Column -->
 			<div class="col-12 col-md-6 col-lg">
-			  <div class="ftco-footer-widget mb-2 text-md-left mx-auto" style="max-width: 270px;"> <!-- Centered with max-width -->
+			  <div class="ftco-footer-widget mb-2 text-md-left mx-auto" style="width: 255px;"> <!-- Centered with max-width -->
 				<div class="d-flex align-items-left justify-content-center justify-content-md-start">
 				  <a href="{% url 'dashboard' %}" class="app-footer-link">
 					<span class="app-footer-logo demo m-3">
@@ -2076,7 +2096,7 @@
 	  
 			<!-- Services Column -->
 			<div class="col-12 .footer-col col-lg">
-			  <div class="ftco-footer-widget text-left mx-auto" style="max-width: 270px;"> <!-- Centered with max-width -->
+			  <div class="ftco-footer-widget text-left mx-auto" style="width: 180px;"> <!-- Centered with max-width -->
 				<h2 class="ftco-heading-2 mb-3">Our Services</h2>
 				<div class="services-list">
 				  <ul class="list-unstyled pl-0 ml-0">
@@ -2094,15 +2114,15 @@
 	  
 			<!-- Contact Column -->
 			<div class="col-12 .footer-col col-lg">
-			  <div class="ftco-footer-widget text-left mx-auto" style="max-width: 270px;"> <!-- Centered with max-width -->
+			  <div class="ftco-footer-widget text-left mx-auto" style="width: 250px;"> <!-- Centered with max-width -->
 				<h2 class="ftco-heading-2">Contact</h2>
 				<div class="block-23" style="margin-bottom: 5px !important">
 				  <ul class="text-left pl-0 ml-0">
-					<li class="py-1"><span class="icon fa fa-user"></span><span id="contact-name" class="text">Satheesh A</span></li>
-					<li class="py-1"><span class="icon fa fa-map-marker"></span><span id="contact-address" class="text">Coimbatore, Tamil Nadu 641033, India</span></li>
-					<li class="py-1"><span class="icon fa fa-bank"></span><span id="contact-gstin" class="text">33BHTPR6598F1ZI</span></li>
-					<li class="py-1"><span class="icon fa fa-phone"></span><span id="contact-phone" class="text">(+91)7736500760</span></li>
-					<li class="py-1"><span class="icon fa fa-paper-plane"></span><span id="contact-email" class="text">info@cssbase.in</span></li>
+					<li class="py-0"><span class="icon fa fa-user"></span><span id="contact-name" class="text">Satheesh A</span></li>
+					<li class="py-0"><span class="icon fa fa-map-marker"></span><span id="contact-address" class="text">11/03 2nd Floor Ksum, Kochin, Kerala 641033, India</span></li>
+					{% comment %} <li class="py-0"><span class="icon fa fa-bank"></span><span id="contact-gstin" class="text">33BHTPR6598F1ZI</span></li> {% endcomment %}
+					<li class="py-0"><span class="icon fa fa-phone"></span><span id="contact-phone" class="text">(+91)7736500760</span></li>
+					<li class="py-0"><span class="icon fa fa-paper-plane"></span><span id="contact-email" class="text">info@cssbase.in</span></li>
 				  </ul>
 				</div>
 			  </div>
@@ -2110,7 +2130,7 @@
 	  
 			<!-- Business Hours Column -->
 			<div class="col-12 .footer-col col-lg">
-			  <div class="ftco-footer-widget text-left mx-auto" style="max-width: 270px;"> <!-- Centered with max-width -->
+			  <div class="ftco-footer-widget text-left mx-auto" style="max-width: 200px;"> <!-- Centered with max-width -->
 				<h2 class="ftco-heading-2">Business Hours</h2>
 				<div class="opening-hours">
 				  <h4>Opening Days:</h4>

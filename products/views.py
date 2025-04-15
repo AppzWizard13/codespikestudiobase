@@ -351,9 +351,14 @@ class ProductDetailView(DetailView):
     template_name = 'product_detail.html'
     context_object_name = 'product'
 
+    def get_object(self):
+        sku = self.kwargs['sku']  # get the sku from the URL
+        return get_object_or_404(Product, sku=sku)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        product = self.get_object()
+        product = self.get_object()  # this will now return the product by SKU
+
         context['enable_cart'] = Configuration.objects.get(config="enable-cart")
         context['total_categories'] = Category.objects.all()
         context['same_category_products'] = Product.objects.filter(
@@ -362,4 +367,5 @@ class ProductDetailView(DetailView):
         context['same_subcategory_products'] = Product.objects.filter(
             subcategory=product.subcategory
         ).exclude(id=product.id)[:8] if product.subcategory else []
+
         return context

@@ -65,6 +65,17 @@
             </div>
             {% endif %}
           </div>
+
+
+          <div class="col-md-4">
+            <label for="image_4" class="form-label">Additional Image 4</label>
+            {{ form.image_4 }}
+            {% if form.instance.image_4 %}
+            <div class="mt-2">
+              <img src="{{ form.instance.image_4.url }}" class="img-thumbnail" width="120">
+            </div>
+            {% endif %}
+          </div>
         </div>
 
         <div class="mb-3">

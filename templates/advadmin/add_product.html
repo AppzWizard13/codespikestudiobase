@@ -223,6 +223,30 @@
                     {% endif %}
                     </div>
                 </div>
+
+
+                  <div class="col-md-4 mb-3">
+                    <label for="id_image_4" class="form-label">Image 4</label>
+                    <input type="file" class="form-control {% if form.image_4.errors %}is-invalid{% endif %}" 
+                        id="id_image_4" name="image_4" accept="image/*" onchange="previewImage(this, 'previewImage4')">
+                    <div class="invalid-feedback">
+                    {{ form.image_4.errors.0 }}
+                    </div>
+                    <div class="image-preview-container mt-2">
+                    {% if form.instance.image_4 %}
+                        <div class="image-wrapper">
+                        <img src="{{ form.instance.image_4.url }}" class="uniform-image" id="previewImage4">
+                        <button type="button" class="btn btn-sm btn-danger remove-image" data-target="id_image_4" data-preview="previewImage4">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        </div>
+                    {% else %}
+                        <div class="image-wrapper">
+                        <img src="" class="uniform-image" id="previewImage4" style="display: none;">
+                        </div>
+                    {% endif %}
+                    </div>
+                </div>
                 </div>
             </div>
             
