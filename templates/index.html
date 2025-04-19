@@ -595,7 +595,7 @@
 							<div class="col">
 								<div class="top-wrap d-flex">
 									<div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-location-arrow"></span></div>
-									<div class="text"><span>Address</span><span>11/03 2nd Floor Ksum, Kochin, Kerala 641033, India</span></div>
+									<div class="text"><span>Address</span><span>Codespike Studio, Ganapathy, Tamil Nadu 641006, India</span></div>
 								</div>
 							</div>
 							<div class="col">
@@ -766,10 +766,10 @@
 
 	<!-- Floating Action Buttons -->
 	<div class="fab-container">
-		<a href="https://wa.me/yourwhatsappnumber" class="fab whatsapp" target="_blank">
+		<a href="https://wa.me/+917736500760" class="fab whatsapp" target="_blank">
 			<i class="fab fa-whatsapp"></i>  <!-- WhatsApp Icon -->
 		</a>
-		<a href="tel:+yourphonenumber" class="fab phone">
+		<a href="tel:+917736500760" class="fab phone">
 			<i class="fas fa-phone"></i>  <!-- Phone Icon -->
 		</a>
 		<input type="hidden" id="username" value="{{ request.user.username }}">
@@ -1340,7 +1340,7 @@
 							</div>
 							<h2 class="mb-0" style="color:lightgrey !important;">Dream it in your mind?<span style="color:lightgreen;"> &nbsp;Let’s make it online!</span></h2>
 						</div>
-						<a href="https://pdf.indiamart.com/impdf/23953284097/136190013/sapet-tyre-changer.pdf" class="bg-catelogue btn-custom d-flex align-items-center"><span>Get Our Catelogue</span></a>
+						<a href="{% url 'login' %}" class="bg-catelogue btn-custom d-flex align-items-center"><span>Lets Begin Our Journey</span></a>
 					</div>
 				</div>
 			</div>	
@@ -1582,13 +1582,11 @@
 			</div>
 	
 			{% for cat in category_products %}
-			<!-- Category Title -->
 			<h5 class="text-center my-4">{{ cat.category.name }}</h5>
 		
-			<!-- Product Grid -->
 			<div class="product-grid d-flex flex-wrap justify-content-center mb-5">
 				{% for product in cat.products %}
-				<div class="blog-entry d-flex flex-column m-2" style="width: 220px;">
+				<div class="blog-entry responsive-card d-flex flex-column m-2">
 					<a href="{% url 'product_detail' product.sku %}" class="block-20">
 						<img src="{{ product.images.url|default:'/static/images/placeholder.jpg' }}" 
 							 alt="{{ product.name }}" class="product-image img-fluid">
@@ -1597,7 +1595,7 @@
 						<h3 class="heading text-center">
 							<a href="{% url 'product_detail' product.sku %}">{{ product.name }}</a>
 						</h3>
-						<p class="text-center font-weight-bold mt-auto" style="margin-top:-35px!important">
+						<p class="text-center font-weight-bold mt-auto">
 							<strong>Price:</strong> ₹{{ product.price }}
 						</p>
 					</div>
@@ -1608,11 +1606,25 @@
 			</div>
 		{% endfor %}
 		
+		
+		
 		</div>
 	</section>
 	
 	<!-- CSS for Styling -->
 	<style>
+
+		/* Default style (desktop and up) */
+		.responsive-card {
+			width: 220px;
+		}
+
+		/* Mobile view: full width */
+		@media (max-width: 576px) {
+			.responsive-card {
+				width: 100% !important;
+			}
+		}
 		/* Scoped Styles - Only Applies to .custom-product-section */
 		.custom-product-section .product-grid {
 			display: grid;
@@ -1922,7 +1934,7 @@
           <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
             <div class="block-18 text-center">
               <div class="text">
-                <strong class="number" data-number="45">0</strong>
+                <strong class="number" data-number="5">0</strong>
               </div>
               <div class="text">
               	<span>Years of Experienced</span>
@@ -1932,7 +1944,7 @@
           <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
             <div class="block-18 text-center">
               <div class="text">
-                <strong class="number" data-number="8500">0</strong>
+                <strong class="number" data-number="43">0</strong>
               </div>
               <div class="text">
               	<span>Project completed</span>
@@ -1942,7 +1954,7 @@
           <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
             <div class="block-18 text-center">
               <div class="text">
-                <strong class="number" data-number="2342">0</strong>
+                <strong class="number" data-number="43">0</strong>
               </div>
               <div class="text">
               	<span>Happy Customers</span>
@@ -1952,10 +1964,10 @@
           <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
             <div class="block-18 text-center">
               <div class="text">
-                <strong class="number" data-number="30">0</strong>
+                <strong class="number" data-number="10">0</strong>
               </div>
               <div class="text">
-              	<span>Award Winning</span>
+              	<span>Our Team Members</span>
               </div>
             </div>
           </div>
@@ -1976,7 +1988,7 @@
 				<div class="col-md-12 ftco-animate">
 					<!-- Google Map Embed using iframe with marker -->
 					<iframe 
-						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.287865356603!2d77.04236809999999!3d11.0170152!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba857b9b8dac099%3A0x3262d6ec75101180!2sSAP%20EQUIPMENTS%20%26%20TOOLS!5e0!3m2!1sen!2sin!4v1741336541976!5m2!1sen!2sin&markers=color:red%7Clabel:SAP%7C11.0170152,77.0423681" 
+						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2937472.825135489!2d76.62028135!3d10.45282775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88fdba85cc7387a3%3A0x51b8faf0624efd71!2sCodespikeStudio!5e1!3m2!1sen!2sin!4v1745066902786!5m2!1sen!2sin" 
 						width="100%" 
 						height="800" 
 						style="border:0;" 
@@ -2119,7 +2131,7 @@
 				<div class="block-23" style="margin-bottom: 5px !important">
 				  <ul class="text-left pl-0 ml-0">
 					<li class="py-0"><span class="icon fa fa-user"></span><span id="contact-name" class="text">Satheesh A</span></li>
-					<li class="py-0"><span class="icon fa fa-map-marker"></span><span id="contact-address" class="text">11/03 2nd Floor Ksum, Kochin, Kerala 641033, India</span></li>
+					<li class="py-0"><span class="icon fa fa-map-marker"></span><span id="contact-address" class="text">Codespike Studio, Ganapathy, Tamil Nadu 641006, India</span></li>
 					{% comment %} <li class="py-0"><span class="icon fa fa-bank"></span><span id="contact-gstin" class="text">33BHTPR6598F1ZI</span></li> {% endcomment %}
 					<li class="py-0"><span class="icon fa fa-phone"></span><span id="contact-phone" class="text">(+91)7736500760</span></li>
 					<li class="py-0"><span class="icon fa fa-paper-plane"></span><span id="contact-email" class="text">info@cssbase.in</span></li>

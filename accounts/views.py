@@ -181,10 +181,7 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 # Home Page View
 class HomePageView(TemplateView):
-    
-
     template_name = "index.html"
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         total_categories = Category.objects.all().prefetch_related('products')
@@ -206,7 +203,7 @@ class HomePageView(TemplateView):
 
         for product in all_products:
             category_obj = product.category
-            if len(grouped[category_obj]) < 8:
+            if len(grouped[category_obj]) < 20:
                 grouped[category_obj].append(product)
 
         # Step 3: Prepare context list
