@@ -6,9 +6,7 @@
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    />
-
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
     <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
 
     <meta name="description" content="" />
@@ -53,7 +51,7 @@
 			width: 100%; /* Adjust width to compensate for the scale */
 			height: 90%;
 			transform-origin: top left; /* Ensure the scaling starts from the top-left corner */
-			zoom: 0.9; 
+			zoom: 0.8; 
 			margin: 0; /* Remove default margin */
 			overflow: auto; /* Prevent scrollbars from appearing */
 			margin-bottom: -1437px;
@@ -317,14 +315,25 @@
                 <div data-i18n="Manage Reviews">Manage Support Agent</div>
               </a>
             </li>
-
-
-
-
-         
-
-
-
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-download"></i>
+                <div data-i18n="Backups">BACK UP</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="{% url 'download_database' %}" class="menu-link">
+                    <div data-i18n="Database Backup">DB Backup</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{% url 'download_all_media' %}" class="menu-link"
+                     onclick="return confirm('This will download all media files as a ZIP archive. Continue?')">
+                    <div data-i18n="Media Backup">Download All Media</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Pages</span>
             </li>

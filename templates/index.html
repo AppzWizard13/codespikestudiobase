@@ -1588,7 +1588,7 @@
 			<!-- Product Grid -->
 			<div class="product-grid d-flex flex-wrap justify-content-center mb-5">
 				{% for product in cat.products %}
-				<div class="blog-entry d-flex flex-column m-2" style="width: 250px;">
+				<div class="blog-entry d-flex flex-column m-2" style="width: 220px;">
 					<a href="{% url 'product_detail' product.sku %}" class="block-20">
 						<img src="{{ product.images.url|default:'/static/images/placeholder.jpg' }}" 
 							 alt="{{ product.name }}" class="product-image img-fluid">

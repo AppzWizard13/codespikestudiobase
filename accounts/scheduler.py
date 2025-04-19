@@ -14,10 +14,12 @@ def self_ping():
     Function to send a GET request to self-ping the server.
     Adjust the URL to your actual endpoint.
     """
+    ping_url = 'https://xxsapequipments.onrender.com/'  # Replace with your actual URL
     try:
-        response = requests.get('https://xxsapequipments.onrender.com/')  # Replace with your actual URL
+        response = requests.get(ping_url)
+        print(f"Pinging URL: {ping_url}")
         if response.status_code == 200:
-            logger.info("Self-ping successful!")
+            logger.info(f"Self-ping successful! URL: {ping_url}")
         else:
             logger.warning(f"Self-ping failed with status code {response.status_code}")
     except Exception as e:

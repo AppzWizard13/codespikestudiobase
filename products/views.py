@@ -307,6 +307,7 @@ class ProductUpdateView(UpdateView):
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('product_list')
+    template_name = 'advadmin/product_confirm_delete.html'
 
     def delete(self, request, *args, **kwargs):
         product = self.get_object()
