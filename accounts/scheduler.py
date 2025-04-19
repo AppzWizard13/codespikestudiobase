@@ -8,6 +8,11 @@ import requests  # Make sure to import requests
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
+
+# Setup logger
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
+
 # Dummy self_ping function
 def self_ping():
     """
@@ -20,10 +25,12 @@ def self_ping():
         print(f"Pinging URL: {ping_url}")
         if response.status_code == 200:
             logger.info(f"Self-ping successful! URL: {ping_url}")
+
         else:
             logger.warning(f"Self-ping failed with status code {response.status_code}")
     except Exception as e:
         logger.error(f"Error during self-ping: {e}")
+
 
 # Function to start the scheduler
 def start():
@@ -42,3 +49,7 @@ def start():
 # Call start() to run the scheduler
 if __name__ == "__main__":
     start()
+
+
+
+
