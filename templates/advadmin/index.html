@@ -237,7 +237,7 @@
             </li>
 
             <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">AUDIT MANAGEMENT</span>
+              <span class="menu-header-text">ACCOUNTS MANAGEMENT</span>
             </li>
             <!-- Layouts -->
             <li class="menu-item">
@@ -252,6 +252,26 @@
                 <div data-i18n="Manage Reviews">Expense Transactions</div>
               </a>
             </li>
+
+            
+            <li class="menu-header small text-uppercase">
+              <span class="menu-header-text">ACCOUNTS SETTINGS</span>
+            </li>
+            <!-- Layouts -->
+            <li class="menu-item">
+              <a href="{% url 'transaction_list' 'income' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-trending-up"></i>
+                <div data-i18n="Manage Banners">Manage Category</div>
+              </a>
+            </li>
+            {% comment %} <li class="menu-item">
+              <a href="{% url 'transaction_list' 'expense' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-trending-down"></i>
+                <div data-i18n="Manage Reviews">Expense Transactions</div>
+              </a>
+            </li> {% endcomment %}
+
+
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">CMS Management</span>
             </li>
@@ -334,9 +354,31 @@
                 </li>
               </ul>
             </li>
+            <!-- Layouts -->
+            <li class="menu-header small text-uppercase">
+              {% comment %} <span class="menu-header-text">Marketing Tools</span>
+            </li>
+            <li class="menu-item">
+              <a href="{% url 'whatsapp_blaster' %}" class="menu-link {% if current_filter == 'ongoing' %}active{% endif %}">
+                <i class="menu-icon tf-icons bx bx-message-dots"></i>
+                <div data-i18n="Manage Banners">Whatsapp Blaster</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="{% url 'ticket_list_filtered' filter_type='resolved' %}" class="menu-link {% if current_filter == 'resolved' %}active{% endif %}">
+                <i class="menu-icon tf-icons bx bx-comment-check"></i>
+                <div data-i18n="Manage Reviews">Coupon Creator</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="{% url 'support_executive_list' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-support"></i>
+                <div data-i18n="Manage Reviews">Manage Support Agent</div>
+              </a>
+            </li>
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Pages</span>
-            </li>
+            </li> {% endcomment %}
             <!-- Layouts -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">

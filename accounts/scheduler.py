@@ -13,24 +13,27 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-# Dummy self_ping function
+
+# Updated self_ping function to ping multiple URLs
 def self_ping():
     """
-    Function to send a GET request to self-ping the server.
-    Adjust the URL to your actual endpoint.
+    Function to send GET requests to self-ping multiple server endpoints.
     """
-    ping_url = 'https://xxsapequipments.onrender.com/'  # Replace with your actual URL
-    try:
-        response = requests.get(ping_url)
-        print(f"Pinging URL: {ping_url}")
-        if response.status_code == 200:
-            logger.info(f"Self-ping successful! URL: {ping_url}")
-
-        else:
-            logger.warning(f"Self-ping failed with status code {response.status_code}")
-    except Exception as e:
-        logger.error(f"Error during self-ping: {e}")
-
+    ping_urls = [
+        'https://xxsapequipments.onrender.com/',
+        'https://aspinxp.onrender.com/'
+    ]
+    
+    for url in ping_urls:
+        try:
+            response = requests.get(url)
+            print(f"Pinging URL: {url}")
+            if response.status_code == 200:
+                logger.info(f"Self-ping successful! URL: {url}")
+            else:
+                logger.warning(f"Self-ping failed for {url} with status code {response.status_code}")
+        except Exception as e:
+            logger.error(f"Error during self-ping to {url}: {e}")
 
 # Function to start the scheduler
 def start():
