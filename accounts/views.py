@@ -1007,40 +1007,60 @@ class SocialMediaDeleteView(LoginRequiredMixin, DeleteView):
         messages.success(request, "Social media link deleted successfully!")
         return super().delete(request, *args, **kwargs)
     
-
+import logging
 from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
+
+# Create a logger for your app
+logger = logging.getLogger(__name__)
 
 def get_company_data(request):
-    # Fetch the first available BusinessDetails entry
-    company = BusinessDetails.objects.first()
+    try:
+        # Fetch the first available BusinessDetails entry
+        company = BusinessDetails.objects.first()
 
-    if not company:
-        return JsonResponse({'error': 'No company data found'}, status=404)
+        if not company:
+            return JsonResponse({'error': 'No company data found'}, status=404)
 
-    # Prepare data safely
-    data = {
-        'company_name': company.company_name,
-        'company_tagline': company.company_tagline,
-        'company_logo_svg_url': company.company_logo_svg.url if company.company_logo_svg else None,
-        'company_logo_url': company.company_logo.url if company.company_logo else None,
-        'company_favicon_url': company.company_favicon.url if company.company_favicon else None,
-        'company_address': company.offline_address,
-        'company_map_location': company.map_location,
-        'info_mobile': company.info_mobile,
-        'info_email': company.info_email,
-        'complaint_mobile': company.complaint_mobile,
-        'complaint_email': company.complaint_email,
-        'sales_mobile': company.sales_mobile,
-        'sales_email': company.sales_email,
-        'company_instagram': company.company_instagram,
-        'company_facebook': company.company_facebook,
-        'company_email_ceo': company.company_email_ceo,
-        'opening_time': company.opening_time.strftime('%H:%M:%S'),
-        'closing_time': company.closing_time.strftime('%H:%M:%S'),
-        'closed_days': company.closed_days.split(',') if company.closed_days else [],
-    }
+        # Prepare data safely
+        data = {
+            'company_name': company.company_name,
+            'gstn': company.gstn,
+            'breadcrumb_image_url': company.breadcrumb_image.url if company.breadcrumb_image else None,
+            'about_page_image_url': company.about_page_image.url if company.about_page_image else None,
+            'company_tagline': company.company_tagline,
+            'company_logo_svg_url': company.company_logo_svg.url if company.company_logo_svg else None,
+            'company_logo_url': company.company_logo.url if company.company_logo else None,
+            'company_favicon_url': company.company_favicon.url if company.company_favicon else None,
+            'company_address': company.offline_address,
+            'company_map_location': company.map_location,
+            'info_mobile': company.info_mobile,
+            'info_email': company.info_email,
+            'complaint_mobile': company.complaint_mobile,
+            'complaint_email': company.complaint_email,
+            'sales_mobile': company.sales_mobile,
+            'sales_email': company.sales_email,
+            'company_instagram': company.company_instagram,
+            'company_facebook': company.company_facebook,
+            'company_email_ceo': company.company_email_ceo,
+            'opening_time': company.opening_time.strftime('%H:%M:%S') if company.opening_time else None,
+            'closing_time': company.closing_time.strftime('%H:%M:%S') if company.closing_time else None,
+            'closed_days': company.closed_days.split(',') if company.closed_days else [],
+        }
 
-    return JsonResponse(data)
+        return JsonResponse(data)
+
+    except ObjectDoesNotExist as e:
+        # Log the error if the object is not found or some data is missing
+        logger.error(f"ObjectDoesNotExist Error: {str(e)} - Failed to fetch company data.")
+        return JsonResponse({'error': 'Company data not found or missing fields'}, status=500)
+
+    except Exception as e:
+        # Catch any other exceptions and log the error
+        logger.error(f"Error while processing company data: {str(e)}")
+        return JsonResponse({'error': 'An unexpected error occurred while processing company data'}, status=500)
+
+
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model

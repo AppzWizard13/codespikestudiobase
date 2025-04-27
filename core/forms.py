@@ -30,6 +30,7 @@ class BusinessDetailsForm(forms.ModelForm):
         widgets = {
             'offline_address': forms.Textarea(attrs={'rows': 3}),
             'company_tagline': forms.TextInput(attrs={'placeholder': 'Your company tagline'}),
+            'gstn': forms.TextInput(attrs={'placeholder': 'xxxxxxxxxxxxxxx'}),
             'info_mobile': forms.TextInput(attrs={'placeholder': '+1234567890'}),
             'complaint_mobile': forms.TextInput(attrs={'placeholder': '+1234567890'}),
             'sales_mobile': forms.TextInput(attrs={'placeholder': '+1234567890'}),
@@ -37,6 +38,8 @@ class BusinessDetailsForm(forms.ModelForm):
             'company_logo': forms.FileInput(attrs={'accept': 'image/*'}),
             'company_logo_svg': forms.FileInput(attrs={'accept': 'image/svg+xml'}),
             'company_favicon': forms.FileInput(attrs={'accept': 'image/*'}),
+            'breadcrumb_image': forms.FileInput(attrs={'accept': 'image/*'}),
+            'about_page_image': forms.FileInput(attrs={'accept': 'image/*'}),
         }
         help_texts = {
             'company_logo_svg': 'Upload SVG version of your logo for better quality',
@@ -48,9 +51,9 @@ class BusinessDetailsForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         # Ensure required fields
-        for field in ['company_name', 'info_mobile', 'info_email', 
+        for field in ['company_name', 'info_mobile', 'info_email', 'gstn',
                       'complaint_mobile', 'complaint_email',
-                      'sales_mobile', 'sales_email', 'company_logo_svg']:
+                      'sales_mobile', 'sales_email', 'company_logo_svg','breadcrumb_image', 'about_page_image']:
             self.fields[field].required = True
 
         # Ensure the time fields have values

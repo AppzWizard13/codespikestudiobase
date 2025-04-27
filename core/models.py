@@ -17,6 +17,8 @@ class BusinessDetails(models.Model):
     company_logo = models.ImageField(upload_to='company/')
     company_favicon = models.ImageField(upload_to='company/')
     company_logo_svg = models.FileField(upload_to='company/')
+    breadcrumb_image = models.FileField(upload_to='company/')
+    about_page_image = models.FileField(upload_to='company/')
     
     # Location Information
     offline_address = models.TextField()
@@ -29,6 +31,7 @@ class BusinessDetails(models.Model):
     complaint_email = models.EmailField()
     sales_mobile = models.CharField(max_length=20)
     sales_email = models.EmailField()
+    gstn = models.CharField(max_length=20)
     
     # Social Media
     company_instagram = models.URLField(blank=True)

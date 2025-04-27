@@ -105,6 +105,58 @@
                 </div>
                 </div>
 
+                <!-- Breadcrumb Image -->
+                <div class="mb-3">
+                  <label class="form-label">Breadcrumb Image*</label>
+                  <input type="file" class="form-control {% if form.breadcrumb_image.errors %}is-invalid{% endif %}" 
+                        name="breadcrumb_image" accept="image/*" onchange="previewImage(this, 'previewBreadcrumbImage')">
+                  <div class="invalid-feedback">
+                    {{ form.breadcrumb_image.errors.0 }}
+                  </div>
+                  <div class="image-preview-container mt-2">
+                    {% if form.instance.breadcrumb_image %}
+                    <div class="image-wrapper">
+                      <img src="{{ form.instance.breadcrumb_image.url }}" class="img-thumbnail" id="previewBreadcrumbImage">
+                      <button type="button" class="btn btn-sm btn-danger remove-image" data-target="id_breadcrumb_image" data-preview="previewBreadcrumbImage">
+                        <i class="bx bx-trash"></i>
+                      </button>
+                    </div>
+                    {% else %}
+                    <div class="image-wrapper">
+                      <img src="" class="img-thumbnail" id="previewBreadcrumbImage" style="display: none;">
+                    </div>
+                    {% endif %}
+                  </div>
+                  <small class="text-muted">Recommended size: 1920x500px for best appearance</small>
+                </div>
+
+
+              <!-- About Page Image -->
+              <div class="mb-3">
+                <label class="form-label">About Page Image*</label>
+                <input type="file" class="form-control {% if form.about_page_image.errors %}is-invalid{% endif %}" 
+                      name="about_page_image" accept="image/*" onchange="previewImage(this, 'previewAboutPageImage')">
+                <div class="invalid-feedback">
+                  {{ form.about_page_image.errors.0 }}
+                </div>
+                <div class="image-preview-container mt-2">
+                  {% if form.instance.about_page_image %}
+                  <div class="image-wrapper">
+                    <img src="{{ form.instance.about_page_image.url }}" class="img-thumbnail" id="previewAboutPageImage">
+                    <button type="button" class="btn btn-sm btn-danger remove-image" data-target="id_about_page_image" data-preview="previewAboutPageImage">
+                      <i class="bx bx-trash"></i>
+                    </button>
+                  </div>
+                  {% else %}
+                  <div class="image-wrapper">
+                    <img src="" class="img-thumbnail" id="previewAboutPageImage" style="display: none;">
+                  </div>
+                  {% endif %}
+                </div>
+                <small class="text-muted">Recommended size: 1920x500px for best appearance</small>
+              </div>
+
+
                 <!-- Company Logo SVG -->
                 <div class="mb-3">
                 <label class="form-label">Company Logo (SVG)*</label>
@@ -221,6 +273,29 @@
                   {{ form.map_location.errors.0 }}
                 </div>
               </div>
+
+
+              <div class="mb-3">
+                <label class="form-label">Map Location URL</label>
+                <input type="url" class="form-control {% if form.map_location.errors %}is-invalid{% endif %}" 
+                       name="map_location" value="{{ form.map_location.value|default:'' }}">
+                <div class="invalid-feedback">
+                  {{ form.map_location.errors.0 }}
+                </div>
+              </div>
+
+
+              <div class="mb-3">
+                <label class="form-label">GSTN</label>
+                <input type="text" class="form-control {% if form.gstn.errors %}is-invalid{% endif %}" 
+                       name="gstn" value="{{ form.gstn.value|default:'' }}">
+                <div class="invalid-feedback">
+                  {{ form.gstn.errors.0 }}
+                </div>
+              </div>
+              
+
+
             </div>
           </div>
 

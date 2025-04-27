@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>CodeSpike Studio</title>
+    <title id="page-title"></title>
     <meta charset="utf-8">
 	<link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 	<meta name="csrf-token" content="{{ csrf_token }}">
@@ -604,10 +604,10 @@
 							</div>
 							<div class="col">
 								<div class="top-wrap d-flex">
-									<div class="text"><span>Call us</span><span>(+91) 77365 00760</span></div>
+									<div class="text"><span>Call us</span><span id="info-mobile"></span></div>
 								</div>
 								<div class="top-wrap d-flex">
-									<div class="text"><span>GSTIN</span><span>33BHTPR6598F1ZI</span></div>
+									<div class="text"><span>GSTIN</span><span id="gstn"></span></div>
 								</div>
 							</div>
 							<div class="col-md-3 d-flex justify-content-end justify-content-md-evenly align-items-center">
@@ -770,12 +770,13 @@
 
 	<!-- Floating Action Buttons -->
 	<div class="fab-container">
-		<a href="https://wa.me/+917736500760" class="fab whatsapp" target="_blank">
-			<i class="fab fa-whatsapp"></i>  <!-- WhatsApp Icon -->
-		</a>
-		<a href="tel:+917736500760" class="fab phone">
-			<i class="fas fa-phone"></i>  <!-- Phone Icon -->
-		</a>
+		<a href="https://wa.me/+917736500760" class="fab whatsapp" target="_blank" id="wtinfo-mobile">
+			<i class="fab fa-whatsapp"></i> 
+		  </a>
+		  
+		  <a href="tel:+917736500760" class="fab phone" id="contact-phone">
+			<i class="fas fa-phone"></i> 
+		  </a>
 		<input type="hidden" id="username" value="{{ request.user.username }}">
 		<a href="/cart/view" class="fab cart" id="cart-button">
 			<i class="fas fa-shopping-cart"></i>  <!-- Cart Icon -->
@@ -1482,13 +1483,16 @@
     <section class="ftco-section">
     	<div class="container">
     		<div class="row d-flex no-gutters">
-    			<div class="col-md-6 d-flex">
-    				<div class="img img-video d-flex align-self-stretch align-items-center justify-content-center mb-4 mb-sm-0" style="background-image:url({% static 'images/about.jpg' %});">
-    					{% comment %} <a href="https://vimeo.com/45830194" class="icon-video popup-vimeo d-flex justify-content-center align-items-center">
-    						<span class="fa fa-play"></span>
-    					</a> {% endcomment %}
-    				</div>
-    			</div>
+				<div class="col-md-6 d-flex">
+					<div id="about-page-image-home" class="img img-video d-flex align-self-stretch align-items-center justify-content-center mb-4 mb-sm-0"
+						 style="background-image: url('{% static 'images/about.jpg' %}');">
+					  <!-- Uncomment the below part when needed -->
+					  <a href="https://vimeo.com/45830194" class="icon-video popup-vimeo d-flex justify-content-center align-items-center">
+						<span class="fa fa-play"></span>
+					  </a>
+					</div>
+				  </div>
+				  
 				<div class="col-md-6 pl-md-5">
 					<div class="row justify-content-start py-5">
 						<div class="col-md-12 heading-section ftco-animate">
@@ -2111,7 +2115,7 @@
 			</div>
 	  
 			<!-- Services Column -->
-			<div class="col-12 .footer-col col-lg">
+			<div class="col-12 col-md-6 col-lg">
 			  <div class="ftco-footer-widget text-left mx-auto" style="width: 180px;"> <!-- Centered with max-width -->
 				<h2 class="ftco-heading-2 mb-3">Our Services</h2>
 				<div class="services-list">
@@ -2129,7 +2133,7 @@
 			</div>
 	  
 			<!-- Contact Column -->
-			<div class="col-12 .footer-col col-lg">
+			<div class="col-12 col-md-6 col-lg">
 			  <div class="ftco-footer-widget text-left mx-auto" style="width: 250px;"> <!-- Centered with max-width -->
 				<h2 class="ftco-heading-2">Contact</h2>
 				<div class="block-23" style="margin-bottom: 5px !important">
@@ -2145,7 +2149,7 @@
 			</div>
 	  
 			<!-- Business Hours Column -->
-			<div class="col-12 .footer-col col-lg">
+			<div class="col-12 col-md-6 col-lg">
 			  <div class="ftco-footer-widget text-left mx-auto" style="max-width: 200px;"> <!-- Centered with max-width -->
 				<h2 class="ftco-heading-2">Business Hours</h2>
 				<div class="opening-hours">
@@ -2179,20 +2183,26 @@
 	  const faviconLink = document.querySelector("link[rel='icon']"); // Select favicon link
 	  const openingDays = document.getElementById('opening-hours');
 	  const holiday = document.getElementById('holiday-info');
+	  const gstn = document.getElementById('gstn');
 	  const contactName = document.getElementById('contact-name');
+	  const page_title = document.getElementById('page-title');
 	  const contactAddress = document.getElementById('contact-address');
 	  const contactGstin = document.getElementById('contact-gstin');
 	  const contactPhone = document.getElementById('contact-phone');
+	  const info_mobile = document.getElementById('info-mobile');
+	  const wtinfo_mobile = document.getElementById('wtinfo-mobile');
+	  const wtinfo_mobile_text = document.getElementById('wtinfo-mobile-text');
 	  const contactEmail = document.getElementById('contact-email');
 	  const companyTagline = document.getElementById('company-tagline');
 	  const facebookLink = document.getElementById('facebook-link');
 	  const instagramLink = document.getElementById('instagram-link');
 	  const googleLink = document.getElementById('google-link');
-  
+	  const breadcrumbHero = document.getElementById('breadcrumb-hero');
+	  const aboutPageImageHome = document.getElementById('about-page-image-home');
+	  const aboutPageImage = document.getElementById('about-page-image');
 	  fetch('/api/company-data/')
 		.then(response => response.json())
 		.then(data => {
-  
 		  // ✅ Load the company logo
 		  if (data.company_logo_url) {
 			logoImg.src = data.company_logo_url;
@@ -2208,6 +2218,18 @@
 		  } else {
 			loader.innerHTML = "No Logo Available"; // Show text if no logo
 			footerloader.innerHTML = "No Logo Available"; // Show text if no logo
+		  }
+		  if (data.breadcrumb_image_url) {
+			breadcrumbHero.style.backgroundImage = `url('${data.breadcrumb_image_url}')`;
+		  }
+
+		  if (data.about_page_image_url) {
+			aboutPageImage.style.backgroundImage = `url('${data.about_page_image_url}')`;
+		  }
+
+		  if (data.about_page_image_url) {
+			console.log("about_page_image_urlabout_page_image_urlabout_page_image_url", about_page_image_url)
+			aboutPageImageHome.style.backgroundImage = `url('${data.about_page_image_url}')`;
 		  }
   
 		  // ✅ Load the favicon dynamically
@@ -2243,6 +2265,12 @@
 		  if (data.company_name) {
 			contactName.textContent = data.company_name;
 		  }
+		  if (data.company_name) {
+			page_title.textContent = data.company_name;
+		  }
+		  if (data.gstn) {
+			gstn.textContent = data.gstn;
+		  }
 		  if (data.company_address) {
 			contactAddress.textContent = data.company_address;
 		  }
@@ -2250,7 +2278,15 @@
 			contactGstin.textContent = data.company_gstin;
 		  }
 		  if (data.info_mobile) {
-			contactPhone.textContent = data.info_mobile;
+			const sanitizedNumber = data.info_mobile.replace(/\D/g, '');
+		  
+			// Update href attributes
+			wtinfo_mobile.href = `https://wa.me/+${sanitizedNumber}`;
+			contactPhone.href = `tel:+${sanitizedNumber}`;
+		  
+			// Update displayed text
+			wtinfo_mobile_text.textContent = data.info_mobile;
+			contactPhoneText.textContent = data.info_mobile;
 		  }
 		  if (data.info_email) {
 			contactEmail.textContent = data.info_email;
