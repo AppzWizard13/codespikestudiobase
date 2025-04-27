@@ -31,6 +31,9 @@ class BusinessDetailsForm(forms.ModelForm):
             'offline_address': forms.Textarea(attrs={'rows': 3}),
             'company_tagline': forms.TextInput(attrs={'placeholder': 'Your company tagline'}),
             'gstn': forms.TextInput(attrs={'placeholder': 'xxxxxxxxxxxxxxx'}),
+            'company_instagram': forms.TextInput(attrs={'placeholder': 'xxxxxxxxxxxxxxx'}),
+            'company_facebook': forms.TextInput(attrs={'placeholder': 'xxxxxxxxxxxxxxx'}),
+            'company_email_ceo': forms.TextInput(attrs={'placeholder': 'xxxxxxxxxxxxxxx'}),
             'info_mobile': forms.TextInput(attrs={'placeholder': '+1234567890'}),
             'complaint_mobile': forms.TextInput(attrs={'placeholder': '+1234567890'}),
             'sales_mobile': forms.TextInput(attrs={'placeholder': '+1234567890'}),
@@ -51,7 +54,7 @@ class BusinessDetailsForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         # Ensure required fields
-        for field in ['company_name', 'info_mobile', 'info_email', 'gstn',
+        for field in ['company_name', 'info_mobile', 'info_email', 'gstn','company_instagram', 'company_facebook', 'company_email_ceo',
                       'complaint_mobile', 'complaint_email',
                       'sales_mobile', 'sales_email', 'company_logo_svg','breadcrumb_image', 'about_page_image']:
             self.fields[field].required = True

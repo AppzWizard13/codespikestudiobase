@@ -82,6 +82,37 @@
                 </div>
                 </div>
 
+                <!-- Company Instagram -->
+                <div class="mb-3">
+                  <label class="form-label">Company Instagram</label>
+                  <input type="url" class="form-control {% if form.company_instagram.errors %}is-invalid{% endif %}" 
+                        name="company_instagram" value="{{ form.company_instagram.value|default:'' }}">
+                  <div class="invalid-feedback">
+                      {{ form.company_instagram.errors.0 }}
+                  </div>
+                </div>
+
+                <!-- Company Facebook -->
+                <div class="mb-3">
+                  <label class="form-label">Company Facebook</label>
+                  <input type="url" class="form-control {% if form.company_facebook.errors %}is-invalid{% endif %}" 
+                        name="company_facebook" value="{{ form.company_facebook.value|default:'' }}">
+                  <div class="invalid-feedback">
+                      {{ form.company_facebook.errors.0 }}
+                  </div>
+                </div>
+
+                <!-- Company CEO Email -->
+                <div class="mb-3">
+                  <label class="form-label">Company CEO Email</label>
+                  <input type="email" class="form-control {% if form.company_email_ceo.errors %}is-invalid{% endif %}" 
+                        name="company_email_ceo" value="{{ form.company_email_ceo.value|default:'' }}">
+                  <div class="invalid-feedback">
+                      {{ form.company_email_ceo.errors.0 }}
+                  </div>
+                </div>
+
+
                 <div class="mb-3">
                 <label class="form-label">Company Logo</label>
                 <input type="file" class="form-control {% if form.company_logo.errors %}is-invalid{% endif %}" 
