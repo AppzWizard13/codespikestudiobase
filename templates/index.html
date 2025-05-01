@@ -599,7 +599,7 @@
 							<div class="col">
 								<div class="top-wrap d-flex">
 									<div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-location-arrow"></span></div>
-									<div class="text"><span>Address</span><span>Codespike Studio, Ganapathy, Tamil Nadu 641006, India</span></div>
+									<div class="text"><span >Address</span><span id="contact-address"></span></div>
 								</div>
 							</div>
 							<div class="col">
@@ -2092,7 +2092,7 @@
 				<div class="block-23" style="margin-bottom: 5px !important">
 				  <ul class="text-left pl-0 ml-0">
 					<li class="py-0"><span class="icon fa fa-user"></span><span id="contact-name" class="text">Satheesh A</span></li>
-					<li class="py-0"><span class="icon fa fa-map-marker"></span><span id="contact-address" class="text">Codespike Studio, Ganapathy, Tamil Nadu 641006, India</span></li>
+					<li class="py-0"><span class="icon fa fa-map-marker"></span><span id="contact-address-footer" class="text"></span></li>
 					{% comment %} <li class="py-0"><span class="icon fa fa-bank"></span><span id="contact-gstin" class="text">33BHTPR6598F1ZI</span></li> {% endcomment %}
 					<li class="py-0"><span class="icon fa fa-phone"></span><span id="contact-phone" class="text">(+91)7736500760</span></li>
 					<li class="py-0"><span class="icon fa fa-paper-plane"></span><span id="contact-email" class="text">info@cssbase.in</span></li>
@@ -2140,6 +2140,7 @@
 	  const contactName = document.getElementById('contact-name');
 	  const page_title = document.getElementById('page-title');
 	  const contactAddress = document.getElementById('contact-address');
+	  const contactAddressFooter = document.getElementById('contact-address-footer');
 	  const contactGstin = document.getElementById('contact-gstin');
 	  const contactPhone = document.getElementById('contact-phone');
 	  const info_mobile = document.getElementById('info-mobile');
@@ -2226,8 +2227,10 @@
 		  if (data.gstn && gstn) {
 			gstn.textContent = data.gstn;
 		  }
+		  console.log('data.company_addressdata.company_addressdata.company_address', data.company_address)
 		  if (data.company_address && contactAddress) {
 			contactAddress.textContent = data.company_address;
+			contactAddressFooter.textContent = data.company_address;
 		  }
 		  if (data.company_gstin && contactGstin) {
 			contactGstin.textContent = data.company_gstin;

@@ -21,6 +21,11 @@ from django.contrib.auth import logout, login
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 
+from orders.models import Transaction, Order
+from django.utils import timezone
+from datetime import timedelta
+from django.db import models 
+
 
 logger = logging.getLogger(__name__)
 
@@ -338,6 +343,8 @@ class LogoutView(LoginRequiredMixin, View):
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
+    
+
     """
     Dashboard view that changes based on ADMIN_PANEL_MODE setting
     """
@@ -356,12 +363,73 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             return ['admin_panel/standard.html']  # Add if you have this
         else:  # basic or any other value
             return ['admin_panel/index.html']
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
         
-        # Common context for all modes
+    def get_context_data(self, **kwargs):
+        from django.db.models import Sum, Q, Count
+        context = super().get_context_data(**kwargs)
+
+        transactions = Transaction.objects.all()
+
+        total_sales_amount = transactions.filter(
+            category=Transaction.Category.SALES,
+            transaction_type=Transaction.Type.INCOME,
+        ).aggregate(total=Sum('amount'))['total'] or 0
+
+        total_completed_amount = transactions.filter(
+            status=Transaction.Status.COMPLETED
+        ).aggregate(total=Sum('amount'))['total'] or 0
+
+        total_transaction_amount = transactions.aggregate(total=Sum('amount'))['total'] or 0
+
+        total_income = transactions.filter(
+            transaction_type=Transaction.Type.INCOME
+        ).aggregate(total=Sum('amount'))['total'] or 0
+
+        total_expense = transactions.filter(
+            transaction_type=Transaction.Type.EXPENSE
+        ).aggregate(total=Sum('amount'))['total'] or 0
+
+        profit = total_income - total_expense
+
+        # Orders related counts
+        orders = Order.objects.values('status').annotate(count=Count('id'))
+
+        # Initialize all as 0
+        order_status_counts = {
+            'pending_orders': 0,
+            'processing_orders': 0,
+            'shipped_orders': 0,
+            'delivered_orders': 0,
+            'cancelled_orders': 0,
+            'returned_orders': 0,
+        }
+
+        total_orders = 0
+
+        for order in orders:
+            status = order['status']
+            count = order['count']
+            total_orders += count
+
+            if status == Order.Status.PENDING:
+                order_status_counts['pending_orders'] = count
+            elif status == Order.Status.PROCESSING:
+                order_status_counts['processing_orders'] = count
+            elif status == Order.Status.SHIPPED:
+                order_status_counts['shipped_orders'] = count
+            elif status == Order.Status.DELIVERED:
+                order_status_counts['delivered_orders'] = count
+            elif status == Order.Status.CANCELLED:
+                order_status_counts['cancelled_orders'] = count
+            elif status == Order.Status.RETURN:
+                order_status_counts['returned_orders'] = count
+
+        # --- Final base context ---
         base_context = {
+            'total_sales_amount': total_sales_amount,
+            'total_completed_amount': total_completed_amount,
+            'total_transaction_amount': total_transaction_amount,
+            'profit': profit,
             'total_products': Product.objects.all(),
             'total_products_count': Product.objects.count(),
             'total_categories': Category.objects.all(),
@@ -369,16 +437,16 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             'total_enquiries': Enquiry.objects.count(),
             'total_cat_count': Category.objects.count(),
             'total_subcat_count': subcategory.objects.count(),
+            'total_orders': total_orders,
             'admin_mode': getattr(settings, 'ADMIN_PANEL_MODE', 'basic'),
         }
-        
-        # Add mode-specific context
-        admin_mode = getattr(settings, 'ADMIN_PANEL_MODE', 'basic').lower()
 
-        print("base_contextbase_context", base_context)
+        base_context.update(order_status_counts)
+
         context.update(base_context)
         return context
-    
+
+
 
 
 class DashboardSearchView(LoginRequiredMixin, TemplateView):
@@ -429,6 +497,7 @@ class AboutView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
         context['total_categories'] = Category.objects.all()
         return context
 
