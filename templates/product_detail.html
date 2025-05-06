@@ -72,19 +72,17 @@
             <div class="col-md-6 ftco-animate">
                 <div class="text mt-3">
                     <h3 class="heading">{{ product.name }}</h3>
-                    <h5 class="heading"><p>Price:<strong> &nbsp; {{ product.price }}</strong></p></h5>
+                    <h5 class="heading"><p>Price  &nbsp;&nbsp;(starts from)&nbsp;:<strong> &nbsp; {{ product.price }}</strong></p></h5>
                     <p><strong>Category:</strong> {{ product.category.name }}</p>
                     {% if product.subcategory %}
                         <p><strong>Subcategory:</strong> {{ product.subcategory.name }}</p>
                     {% endif %}
-                    <p><strong>Additional Information:</strong> {{ product.additional_information }}</p>
+                    {% if product.catalogues %}
                     <p><strong>Catalogue:</strong>
-                        {% if product.catalogues %}
                             <a href="{{ product.catalogues }}" target="_blank">View Catalogue</a>
-                        {% else %}
-                            No Catalogue Available
-                        {% endif %}
                     </p>
+                    {% endif %}
+                    <p><strong>Description:</strong> </br>{{ product.description }}</p>
 
                     <!-- WhatsApp Button -->
                     {% if enable_cart.value == "True" %}
@@ -105,7 +103,7 @@
                     <a href="https://wa.me/+919940100506?text=Hi, I am interested in your product: {{ product.name }}. Price: {{ product.price }}, Category: {{ product.category.name }}{% if product.subcategory %}, Subcategory: {{ product.subcategory.name }}{% endif %}. Additional Information: {{ product.additional_information }}. Product UID: {{ product.product_uid }}" 
                        class="btn btn-primary mt-3 whatsapp-btn" 
                        style="background: green;  color: white; --bs-btn-hover-bg: green; --bs-btn-hover-border-color: #2cf724; --bs-btn-hover-color: white;">
-                       Contact Supplier via WhatsApp
+                       Contact Us via WhatsApp
                     </a>
                     <style>
                         .small-width {
@@ -143,18 +141,23 @@
                 </div>
             </div>
         </div>
+        <!-- Description Section -->
+        {% comment %} <div class="col-md-12 mt-5">
+            <p><strong>Description:</strong> </br>{{ product.description }}</p>
+          
+        </div> {% endcomment %}
 
         <!-- Description & Specifications Section -->
-        <div class="row mt-5 ">
+        <div class="row mt-5">
 
-            <!-- Description Section -->
-            <div class="col-md-6">
+            {% comment %} <!-- Description Section -->
+            <div class="col-md-4">
                 <p><strong>Description:</strong> </br>{{ product.description }}</p>
                 <p><strong>Additional Information:</strong> </br>{{ product.additional_information }}</p>
-            </div>
+            </div> {% endcomment %}
 
             <!-- Specifications Section -->
-            <div class="col-md-5">
+            <div class="col-md-12">
                 <div id="specifications-table" class="specifications-table">
                     <table>
                         <thead>
@@ -171,6 +174,10 @@
             </div>
         </div>
 
+        <!-- Description Section -->
+        <div class="col-md-12 mt-5">
+            <p><strong>Additional Information:</strong> </br>{{ product.additional_information }}</p>
+        </div>
 
         <!-- Same Category Products -->
         <div class="row mt-5">
