@@ -239,7 +239,7 @@ class CheckoutView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         user = self.request.user
         cart_items = TempOrder.objects.filter(user=user, processed = False)
-
+        print("creating_order___module")
         order = Order.objects.create(
             customer=user,
             billing_address=form.cleaned_data['billing_address'],
@@ -371,11 +371,13 @@ class PaymentInitiateProcess(LoginRequiredMixin, View):
     def get_success_url(self, order_id, order_number):
         return f'/initiate-payment/process/{order_id}/{order_number}'
 
+from payments.views import initiate_cashfree_payment  # ensure this is imported properly
+
 class ProcessPaymentView(View):
     def get(self, request, order_id, order_number):
         order = get_object_or_404(Order, id=order_id, order_number=order_number)
         payment_modules = settings.PAYMENT_MODULES
-        
+
         context = {
             'order': order,
             'payment_modules': payment_modules
@@ -386,11 +388,14 @@ class ProcessPaymentView(View):
     def post(self, request, order_id, order_number):
         order = get_object_or_404(Order, id=order_id, order_number=order_number)
         payment_modules = settings.PAYMENT_MODULES
+
         if request.session.get(f'order_{order.order_number}_completed', False):
             messages.warning(request, "This order has already been processed.")
-            return redirect('home')  # Redirect to the home page
+            return redirect('home')
 
         payment_method = request.POST.get('payment_method')
+        print("payment_methodpayment_methodpayment_method", payment_method)
+
         if payment_method == 'cod':
             payment, created = Payment.objects.get_or_create(
                 order=order,
@@ -402,7 +407,7 @@ class ProcessPaymentView(View):
                 payment.status = Payment.Status.PENDING
                 payment.save()
 
-            transaction = Transaction(
+            transaction = Transaction.objects.create(
                 transaction_type=Transaction.Type.INCOME,
                 category=Transaction.Category.SALES,
                 status=Transaction.Status.PENDING,
@@ -412,7 +417,6 @@ class ProcessPaymentView(View):
                 payment=payment,
                 date=order.created_at.date()
             )
-            transaction.save()
 
             order.payment_status = Order.PaymentStatus.PENDING
             order.status = Order.Status.PROCESSING
@@ -422,11 +426,21 @@ class ProcessPaymentView(View):
             request.session[f'order_{order.order_number}_completed'] = True
             return redirect('cod_order_success', pk=order.id)
 
+        elif payment_method == 'gpay':
+            return initiate_cashfree_payment(request, order)
+            # try:
+            #     return initiate_cashfree_payment(request, order)
+            # except Exception as e:
+            #     print("error::::::::::::::::::::::::::::", str(e))
+            #     messages.error(request, f"Payment error: {str(e)}")
+            #     return redirect('payment_failed')
+
         context = {
             'order': order,
             'payment_modules': payment_modules
         }
         return render(request, 'advadmin/paymentmethod.html', context)
+
 
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order

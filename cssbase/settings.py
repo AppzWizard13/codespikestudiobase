@@ -31,7 +31,8 @@ ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',   # If running locally
     'http://127.0.0.1:8000',    # If running locally
-    'https://3354-2401-4900-628d-6da9-1492-7f44-d128-20d1.ngrok-free.app'
+    'https://3354-2401-4900-628d-6da9-1492-7f44-d128-20d1.ngrok-free.app',
+    'https://857a-2401-4900-6279-77b9-c82b-9da3-9edc-d752.ngrok-free.app'
 ]
 
 AUTH_USER_MODEL ='accounts.CustomUser'
@@ -43,8 +44,10 @@ INSTALLED_APPS = [
     'enquiry',
     'products',
     'orders',
+    'payments',
     'markdownx',
     'cloudinary',
+    'django_extensions',
     'core.apps.CoreConfig',
     'django_user_agents',
     'cloudinary_storage',
@@ -213,4 +216,5 @@ TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
 
 
 
-print("TWILIO_PHONE_NUMBERTWILIO_PHONE_NUMBERTWILIO_PHONE_NUMBERTWILIO_PHONE_NUMBER", TWILIO_PHONE_NUMBER)
+CASHFREE_APP_ID = 'TEST10610819dba5002a03c6aca8358191801601'
+CASHFREE_SECRET_KEY = 'cfsk_ma_test_e4e237b4ffe10c1921903ceaa995fef0_338e8a4e'

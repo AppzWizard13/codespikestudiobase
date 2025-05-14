@@ -32,6 +32,8 @@ urlpatterns = [
     path('', include('orders.urls')),
     path('core/', include('core.urls')),
     path('', include('cms.urls')),
+    path('', include('payments.urls')),
+    
 ]
 
 # Static and Media URL patterns
