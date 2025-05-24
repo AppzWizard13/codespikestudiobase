@@ -32,7 +32,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',   # If running locally
     'http://127.0.0.1:8000',    # If running locally
     'https://3354-2401-4900-628d-6da9-1492-7f44-d128-20d1.ngrok-free.app',
-    'https://857a-2401-4900-6279-77b9-c82b-9da3-9edc-d752.ngrok-free.app'
+    'https://eb93-2401-4900-6270-f538-6b0d-4038-96d3-5d0c.ngrok-free.app'
 ]
 
 AUTH_USER_MODEL ='accounts.CustomUser'
@@ -98,6 +98,31 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+from pythonjsonlogger import jsonlogger
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'graylog': {
+            'level': 'INFO',
+            'class': 'core.graylog_handler.GraylogHandler',
+            'formatter': 'json',
+        },
+    },
+    'formatters': {
+        'json': {
+            '()': jsonlogger.JsonFormatter,
+            'fmt': '%(asctime)s %(levelname)s %(message)s',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['graylog'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
 }
 
 
@@ -216,5 +241,5 @@ TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
 
 
 
-CASHFREE_APP_ID = 'TEST10610819dba5002a03c6aca8358191801601'
-CASHFREE_SECRET_KEY = 'cfsk_ma_test_e4e237b4ffe10c1921903ceaa995fef0_338e8a4e'
+CASHFREE_APP_ID = os.getenv("CASHFREE_APP_ID")
+CASHFREE_SECRET_KEY = os.getenv("CASHFREE_SECRET_KEY")
