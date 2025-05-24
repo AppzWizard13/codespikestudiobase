@@ -1,7 +1,7 @@
 # orders/urls.py
 from django.urls import path
 from . import views
-from .views import AddToCartView, CartDetailView, Codordersuccess, OrderDeleteView, OrderDetailView, OrderEditView, OrderListView, ProcessPaymentView, TransactionDetailView, TransactionListView, UpdateCartItemView, RemoveCartItemView, GetCartCountView, CheckoutView, OrderConfirmationView, PaymentInitiateProcess
+from .views import AddToCartView, CartDetailView, CodOrderSuccessView, PaymentOrderSuccessView, OrderDeleteView, OrderDetailView, OrderEditView, OrderListView, ProcessPaymentView, TransactionDetailView, TransactionListView, UpdateCartItemView, RemoveCartItemView, GetCartCountView, CheckoutView, OrderConfirmationView, PaymentInitiateProcess
 
 urlpatterns = [
     path('cart/view/', AddToCartView.as_view(), name='cart_view'),
@@ -18,8 +18,11 @@ urlpatterns = [
     path('initiate-payment/process', PaymentInitiateProcess.as_view(), name='initiate_payment_process'),
     path('initiate-payment/process/<int:order_id>/<str:order_number>', ProcessPaymentView.as_view(), name='process_payment'),
 
-    path('cod-order/success', Codordersuccess.as_view(), name='cod_order_success'),
-    path('cod-order-success/<int:pk>/', Codordersuccess.as_view(), name='cod_order_success'),
+    path('cod-order-success/<int:pk>/', CodOrderSuccessView.as_view(), name='cod_order_success'),
+    path('payment-cod-order-success/<int:pk>/', PaymentOrderSuccessView.as_view(), name='payment_cod_order_success'),
+
+
+    
 
 
     path('orders/', OrderListView.as_view(), name='order_list'),

@@ -491,7 +491,20 @@ class OrderDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('order_list')
     template_name = 'orders/order_confirm_delete.html'
 
-class Codordersuccess(LoginRequiredMixin, DetailView):
+class CodOrderSuccessView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = 'advadmin/order_success.html'
+    context_object_name = 'order'
+    pk_url_kwarg = 'pk'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_paginated'] = True
+        context['query'] = self.request.GET.get('q', '')
+        context['order_items'] = context['order'].items.all()
+        return context
+    
+class PaymentOrderSuccessView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = 'advadmin/order_success.html'
     context_object_name = 'order'

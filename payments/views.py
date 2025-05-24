@@ -132,64 +132,109 @@ def initiate_cashfree_payment(request, order):
 
 
 
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponse
 @csrf_exempt
 def cashfree_webhook(request):
-    # Create log entry at the start
+    # Log initial request
     log_entry = PaymentAPILog.objects.create(
         action='WEBHOOK',
         request_url=request.path,
         response_body=request.body.decode('utf-8') if request.body else None,
-        response_status=0,  # Will update later
+        response_status=0
     )
-    print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            print("datadatadatadatadata", data)
-            order_id = data.get('data', {}).get('link_id')  # e.g., CF_ORD123
-            print("order_idorder_idorder_id", order_id)
-            payment_status = data.get('order', {}).get('order_status')  # e.g., PAID, FAILED
+    
+    if request.method != 'POST':
+        log_entry.error_message = "Invalid method"
+        log_entry.response_status = 405
+        log_entry.save()
+        return JsonResponse({'error': 'Invalid method'}, status=405)
 
-            # if not order_id:
-            #     error_msg = 'Missing order_id'
-            #     log_entry.error_message = error_msg
-            #     log_entry.status_code = 400
-            #     log_entry.save()
-            #     return JsonResponse({'error': error_msg}, status=400)
+    try:
+        data = json.loads(request.body)
+        event_type = data.get("type")
+        print("Webhook Event Type:", event_type)
 
-            # payment = Payment.objects.filter(transaction_id=order_id).first()
-            # if not payment:
-            #     error_msg = 'Payment not found'
-            #     log_entry.error_message = error_msg
-            #     log_entry.status_code = 404
-            #     log_entry.save()
-            #     return JsonResponse({'error': error_msg}, status=404)
+        order_id = None
+        link_id = None
+        payment_status = None
 
-            # # Update payment status
-            # if payment_status == 'PAID':
-            #     payment.status = Payment.Status.COMPLETED
-            #     payment.order.payment_status = Order.PaymentStatus.COMPLETED
-            #     payment.order.status = Order.Status.PROCESSING
-            # elif payment_status in ['FAILED', 'EXPIRED']:
-            #     payment.status = Payment.Status.FAILED
-            #     payment.order.payment_status = Order.PaymentStatus.FAILED
+        if event_type == "PAYMENT_SUCCESS_WEBHOOK":
+            order_data = data.get('data', {}).get('order', {})
+            payment_data = data.get('data', {}).get('payment', {})
+            order_id = order_data.get('order_id')
+            link_id = order_data.get('order_tags', {}).get('link_id')
+            payment_status = payment_data.get('payment_status')
 
-            # payment.gateway_response = data
-            # payment.save()
-            # payment.order.save()
+        elif event_type == "PAYMENT_LINK_EVENT":
+            order_data = data.get('data', {}).get('order', {})
+            order_id = order_data.get('order_id')
+            link_id = data.get('data', {}).get('link_id')
+            payment_status = data.get('data', {}).get('link_status')
 
-            # Update log entry for successful processing
-            log_entry.status_code = 200
-            log_entry.response_data = {'status': 'success', 'order_id': order_id, 'payment_status': payment_status}
-            log_entry.save()
+        elif event_type == "PAYMENT_CHARGES_WEBHOOK":
+            order_data = data.get('data', {}).get('order', {})
+            order_id = order_data.get('order_id')
+            link_id = order_data.get('order_tags', {}).get('link_id')
+            # PAYMENT_CHARGES_WEBHOOK may not have payment_status; treat as success if required
 
-            return HttpResponse(status=200)
+        print("order_id:", order_id)
+        print("link_id:", link_id)
+        print("payment_status:", payment_status)
 
-        except Exception as e:
-            print("eeeeeeeeeeeeeeeeee", e)
-            error_msg = str(e)
+        if not order_id:
+            error_msg = 'Missing order_id'
             log_entry.error_message = error_msg
-            return HttpResponse(status=200)
+            log_entry.response_status = 400
+            log_entry.save()
+            return JsonResponse({'error': error_msg}, status=400)
+
+        payment = Payment.objects.filter(transaction_id=link_id).first()
+        if not payment:
+            error_msg = f'Payment not found for link_id: {link_id}'
+            log_entry.error_message = error_msg
+            log_entry.response_status = 404
+            log_entry.save()
+            return JsonResponse({'error': error_msg}, status=404)
+
+        # Update statuses based on event
+        if event_type == "PAYMENT_SUCCESS_WEBHOOK" and payment_status == "SUCCESS":
+            payment.status = Payment.Status.COMPLETED
+            payment.order.payment_status = Order.PaymentStatus.COMPLETED
+            payment.order.status = Order.Status.PROCESSING
+
+        elif event_type == "PAYMENT_LINK_EVENT":
+            if payment_status == "PAID":
+                payment.status = Payment.Status.COMPLETED
+                payment.order.payment_status = Order.PaymentStatus.COMPLETED
+                payment.order.status = Order.Status.PROCESSING
+            elif payment_status in ['EXPIRED', 'FAILED']:
+                payment.status = Payment.Status.FAILED
+                payment.order.payment_status = Order.PaymentStatus.FAILED
+
+        elif event_type == "PAYMENT_CHARGES_WEBHOOK":
+            # Optionally update or log charge details, if required
+            pass
+
+        payment.gateway_response = data
+        payment.save()
+        payment.order.save()
+
+        log_entry.response_status = 200
+        log_entry.response_body = json.dumps({'status': 'success', 'event_type': event_type})
+        log_entry.link_id = link_id
+        log_entry.save()
+
+        return HttpResponse(status=200)
+
+    except Exception as e:
+        error_msg = str(e)
+        log_entry.error_message = error_msg
+        log_entry.response_status = 500
+        log_entry.save()
+        print("Webhook Processing Error:", error_msg)
+        return HttpResponse(status=200)
+
 
 
 
@@ -205,11 +250,13 @@ def cashfree_return(request):
         return render(request, 'advadmin/payment_failed.html', {'message': 'Payment not found'})
 
     # Check and update status if needed (you can verify via Cashfree status API if needed)
+    print("payment.statuspayment.statuspayment.status", payment.status)
     if payment.status == Payment.Status.COMPLETED:
         print("11111111111")
         request.session[f'order_{payment.order.order_number}_completed'] = True
-        TempOrder.objects.filter(user=payment.order.user, processed=False).update(processed=True)
-        return redirect('cashfree_order_success', pk=payment.order.id)
+        print("payment.order.idpayment.order.idpayment.order.id", payment.order.id)
+        TempOrder.objects.filter(user=payment.order.customer, processed=False).update(processed=True)
+        return redirect('payment_cod_order_success', pk=payment.order.id)
     else:
         print("11111111111")
         return render(request, 'advadmin/payment_failed.html', {'message': 'Payment was not successful'})
