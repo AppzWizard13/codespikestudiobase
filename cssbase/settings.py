@@ -99,31 +99,31 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-from pythonjsonlogger import jsonlogger
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'graylog': {
-            'level': 'INFO',
-            'class': 'core.graylog_handler.GraylogHandler',
-            'formatter': 'json',
-        },
-    },
-    'formatters': {
-        'json': {
-            '()': jsonlogger.JsonFormatter,
-            'fmt': '%(asctime)s %(levelname)s %(message)s',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['graylog'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-    },
-}
+# from pythonjsonlogger import jsonlogger
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'graylog': {
+#             'level': 'INFO',
+#             'class': 'core.graylog_handler.GraylogHandler',
+#             'formatter': 'json',
+#         },
+#     },
+#     'formatters': {
+#         'json': {
+#             '()': jsonlogger.JsonFormatter,
+#             'fmt': '%(asctime)s %(levelname)s %(message)s',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['graylog'],
+#             'level': 'INFO',
+#             'propagate': True,
+#         },
+#     },
+# }
 
 
 # Password validation
