@@ -179,9 +179,6 @@ def cashfree_webhook(request):
             # PAYMENT_CHARGES_WEBHOOK may not have payment_status; treat as success if required
 
         print("order_id:", order_id)
-        if link_id == "payment_ps11":
-            link_id ="ORD-20250601-0001"
-        
         print("link_id:", link_id)
         print("payment_status:", payment_status)
 
@@ -211,7 +208,7 @@ def cashfree_webhook(request):
                 payment.status = Payment.Status.COMPLETED
                 payment.order.payment_status = Order.PaymentStatus.COMPLETED
                 payment.order.status = Order.Status.PROCESSING
-            elif payment_status in ['EXPIRED', 'FAILED', 'PARTIALLY_PAID']:
+            elif payment_status in ['EXPIRED', 'FAILED']:
                 payment.status = Payment.Status.FAILED
                 payment.order.payment_status = Order.PaymentStatus.FAILED
 
