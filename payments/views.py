@@ -211,10 +211,7 @@ def cashfree_webhook(request):
                 payment.status = Payment.Status.COMPLETED
                 payment.order.payment_status = Order.PaymentStatus.COMPLETED
                 payment.order.status = Order.Status.PROCESSING
-            elif payment_status in ['EXPIRED', 'FAILED']:
-                payment.status = Payment.Status.FAILED
-                payment.order.payment_status = Order.PaymentStatus.FAILED
-            elif payment_status in ['EXPIRED', 'FAILED']:
+            elif payment_status in ['EXPIRED', 'FAILED', 'PARTIALLY_PAID']:
                 payment.status = Payment.Status.FAILED
                 payment.order.payment_status = Order.PaymentStatus.FAILED
 
