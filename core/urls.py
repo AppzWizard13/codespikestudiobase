@@ -5,7 +5,8 @@ from .views import (
     ConfigurationListView,
     ConfigurationDetailView,
     ConfigurationUpdateView,
-    ConfigurationDeleteView
+    ConfigurationDeleteView,
+    SystemReset
 )
 
 
@@ -19,4 +20,7 @@ urlpatterns = [
     path('configurations/<int:pk>/', ConfigurationDetailView.as_view(), name='configuration_detail'),
     path('configurations/<int:pk>/edit/', ConfigurationUpdateView.as_view(), name='configuration_update'),
     path('configurations/<int:pk>/delete/', ConfigurationDeleteView.as_view(), name='configuration_delete'),
+
+    path('system-reset/', SystemReset.as_view(), name='system_reset'),
+
 ]

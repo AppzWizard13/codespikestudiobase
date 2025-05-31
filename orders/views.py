@@ -483,7 +483,7 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
 class OrderEditView(LoginRequiredMixin, UpdateView):
     model = Order
     form_class = OrderForm
-    template_name = 'orders/order_edit.html'
+    template_name = 'advadmin/order_edit.html'
     success_url = reverse_lazy('order_list')
 
 class OrderDeleteView(LoginRequiredMixin, DeleteView):
@@ -507,6 +507,19 @@ class CodOrderSuccessView(LoginRequiredMixin, DetailView):
 class PaymentOrderSuccessView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = 'advadmin/order_success.html'
+    context_object_name = 'order'
+    pk_url_kwarg = 'pk'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_paginated'] = True
+        context['query'] = self.request.GET.get('q', '')
+        context['order_items'] = context['order'].items.all()
+        return context
+
+class PaymentOrderFailView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = 'advadmin/order_decline.html'
     context_object_name = 'order'
     pk_url_kwarg = 'pk'
 

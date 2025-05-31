@@ -2161,6 +2161,27 @@
 	  fetch('/api/company-data/')
 		.then(response => response.json())
 		.then(data => {
+			// Load Category Name
+			console.log("data.category_names", data.category_names);
+
+			const servicesList = document.querySelector('.services-list ul');
+
+			if (servicesList && data.category_names && Array.isArray(data.category_names)) {
+			servicesList.innerHTML = ''; // Clear any existing content
+
+			data.category_names.forEach(name => {
+				const li = document.createElement('li');
+				li.className = 'mb-2 text-left';
+
+				li.innerHTML = `
+				<a href="#" class="py-1 d-block text-decoration-none">
+					<span class="fa fa-check mr-2"></span>${name}
+				</a>
+				`;
+
+				servicesList.appendChild(li);
+			});
+			}
 		  // ✅ Load company logo
 		  if (data.company_logo_url) {
 			if (logoImg) {

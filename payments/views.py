@@ -179,6 +179,9 @@ def cashfree_webhook(request):
             # PAYMENT_CHARGES_WEBHOOK may not have payment_status; treat as success if required
 
         print("order_id:", order_id)
+        if link_id == "payment_ps11":
+            link_id ="ORD-20250601-0001"
+        
         print("link_id:", link_id)
         print("payment_status:", payment_status)
 
@@ -208,6 +211,9 @@ def cashfree_webhook(request):
                 payment.status = Payment.Status.COMPLETED
                 payment.order.payment_status = Order.PaymentStatus.COMPLETED
                 payment.order.status = Order.Status.PROCESSING
+            elif payment_status in ['EXPIRED', 'FAILED']:
+                payment.status = Payment.Status.FAILED
+                payment.order.payment_status = Order.PaymentStatus.FAILED
             elif payment_status in ['EXPIRED', 'FAILED']:
                 payment.status = Payment.Status.FAILED
                 payment.order.payment_status = Order.PaymentStatus.FAILED
@@ -246,19 +252,19 @@ def cashfree_return(request):
 
     payment = Payment.objects.filter(transaction_id=order_id).first()
     if not payment:
-        print("11111111111")
+        print("xxxxxxxxxxxxxxxxx")
         return render(request, 'advadmin/payment_failed.html', {'message': 'Payment not found'})
 
     # Check and update status if needed (you can verify via Cashfree status API if needed)
     print("payment.statuspayment.statuspayment.status", payment.status)
     if payment.status == Payment.Status.COMPLETED:
-        print("11111111111")
+        print("yyyyyyyyyyyyyyyyyyy")
         request.session[f'order_{payment.order.order_number}_completed'] = True
         print("payment.order.idpayment.order.idpayment.order.id", payment.order.id)
         TempOrder.objects.filter(user=payment.order.customer, processed=False).update(processed=True)
-        return redirect('payment_cod_order_success', pk=payment.order.id)
+        return redirect('payment_order_success', pk=payment.order.id)
     else:
-        print("11111111111")
+        print("zzzzzzzzzzzzzzzzzzz")
         return render(request, 'advadmin/payment_failed.html', {'message': 'Payment was not successful'})
 
 

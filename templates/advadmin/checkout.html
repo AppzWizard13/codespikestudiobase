@@ -230,7 +230,12 @@
                       <input type="hidden" name="cart_items_{{ forloop.counter0 }}_quantity" value="{{ item.quantity }}">
                       <input type="hidden" name="cart_items_{{ forloop.counter0 }}_price" value="{{ item.price }}">
                       {% endfor %}
-
+                      <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="use_same_address" name="use_same_address">
+                        <label class="form-check-label" for="use_same_address">
+                          Use same address for shipping
+                        </label>
+                      </div>
                       <!-- Shipping Address Fields (if enabled) -->
                       {% if enable_shipping == "True" %}
                       <div class="shipping-address-card card mt-4">
@@ -326,26 +331,41 @@
                           </div>
                         </div>
                       </div>
-                      <div class="form-check mt-3">
-                        <input class="form-check-input" type="checkbox" id="use_same_address" name="use_same_address">
-                        <label class="form-check-label" for="use_same_address">
-                          Use same address for shipping
-                        </label>
-                      </div>
+
                       <script>
-                        document.addEventListener('DOMContentLoaded', function() {
+                        document.addEventListener('DOMContentLoaded', function () {
                           const useSameAddressCheckbox = document.getElementById('use_same_address');
                           const shippingAddressCard = document.querySelector('.shipping-address-card');
-                        
-                          useSameAddressCheckbox.addEventListener('change', function() {
+
+                          useSameAddressCheckbox.addEventListener('change', function () {
                             if (this.checked) {
+                              // Hide the shipping section
                               shippingAddressCard.style.display = 'none';
+
+                              // Copy billing to shipping fields
+                              document.getElementById('id_shipping_first_name').value = document.getElementById('id_first_name').value;
+                              document.getElementById('id_shipping_last_name').value = document.getElementById('id_last_name').value;
+                              document.getElementById('id_shipping_phone').value = document.getElementById('id_phone').value;
+                              document.getElementById('id_shipping_secondary_number').value = document.getElementById('id_secondary_number').value;
+                              document.getElementById('id_shipping_email').value = document.getElementById('id_email').value;
+                              document.getElementById('id_shipping_country').value = document.getElementById('id_country').value;
+                              document.getElementById('id_shipping_city').value = document.getElementById('id_city').value;
+                              document.getElementById('id_shipping_address').value = document.getElementById('id_address').value;
+                              document.getElementById('id_shipping_zip').value = document.getElementById('id_zip').value;
+
+                              // Copy billing state to shipping state
+                              const billingState = document.getElementById('id_state').value;
+                              const shippingState = document.getElementById('id_shipping_state');
+                              if (shippingState) {
+                                shippingState.value = billingState;
+                              }
                             } else {
                               shippingAddressCard.style.display = 'block';
                             }
                           });
                         });
                       </script>
+
                       {% endif %}
 
                       <!-- Order Summary -->

@@ -3,6 +3,14 @@ from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from .models import BusinessDetails
 from .forms import BusinessDetailsForm
+from django.views.generic import TemplateView
+from django.views.generic import TemplateView
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
 
 class BusinessDetailsCreateView(SuccessMessageMixin, CreateView):
     model = BusinessDetails
@@ -165,3 +173,95 @@ class ConfigurationDeleteView(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(request, "Configuration deleted successfully!")
         return super().delete(request, *args, **kwargs)
+    
+
+class ConfigurationDeleteView(LoginRequiredMixin, DeleteView):
+    model = Configuration
+    success_url = reverse_lazy('configuration_list')
+    template_name = None
+
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Configuration deleted successfully!")
+        return super().delete(request, *args, **kwargs)
+    
+
+from orders.models import (
+    Cart, CartItem, Order, OrderItem, Payment,
+    Transaction, TempOrder, GooglePayCredentials
+)
+from products.models import (
+    Product
+)
+
+from accounts.models import (
+    Customer, User
+)
+class SystemReset(TemplateView):
+    template_name = 'advadmin/system-reset_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reset_options'] = [
+            {'label': 'Order & Payment Reset', 'action': 'order_payment'},
+            {'label': 'User Reset', 'action': 'user'},
+            {'label': 'CMS Reset', 'action': 'cms'},
+            {'label': 'Product Reset', 'action': 'product'},
+            {'label': 'All Reset', 'action': 'all'},
+        ]
+        return context
+
+    @method_decorator(csrf_exempt)
+    def post(self, request, *args, **kwargs):
+        reset_type = request.POST.get('reset_type')
+
+        try:
+            if reset_type == 'order_payment':
+                Transaction.objects.all().delete()
+                Payment.objects.all().delete()
+                OrderItem.objects.all().delete()
+                Order.objects.all().delete()
+                TempOrder.objects.all().delete()
+                CartItem.objects.all().delete()
+                Cart.objects.all().delete()
+                messages.success(request, "Order, Payment, TempOrder, and Cart data reset successfully.")
+
+            elif reset_type == 'user':
+                # Be cautious with deleting users.
+                Customer.objects.all().delete()
+                User.objects.exclude(is_superuser=True).delete()
+                Cart.objects.all().delete()
+                messages.success(request, "Customer and User data reset successfully.")
+
+            elif reset_type == 'cms':
+                # Placeholder: add your CMS models and their delete logic
+                messages.success(request, "CMS data reset successfully (update with your CMS models).")
+
+            elif reset_type == 'product':
+                Product.objects.all().delete()
+                messages.success(request, "All product data reset successfully.")
+
+            elif reset_type == 'all':
+                Transaction.objects.all().delete()
+                Payment.objects.all().delete()
+                OrderItem.objects.all().delete()
+                Order.objects.all().delete()
+                TempOrder.objects.all().delete()
+                CartItem.objects.all().delete()
+                Cart.objects.all().delete()
+                Product.objects.all().delete()
+                Customer.objects.all().delete()
+                User.objects.exclude(is_superuser=True).delete()
+                GooglePayCredentials.objects.all().delete()
+                # Add your CMS models here if applicable
+                messages.success(request, "Entire system data reset successfully.")
+
+            else:
+                messages.error(request, "Invalid reset type.")
+
+        except Exception as e:
+            messages.error(request, f"Error during reset: {str(e)}")
+
+        return redirect(reverse('system_reset'))

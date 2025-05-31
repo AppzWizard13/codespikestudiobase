@@ -1087,6 +1087,8 @@ def get_company_data(request):
     try:
         # Fetch the first available BusinessDetails entry
         company = BusinessDetails.objects.first()
+        category_names = list(Category.objects.values_list('name', flat=True))
+
 
         if not company:
             return JsonResponse({'error': 'No company data found'}, status=404)
@@ -1115,6 +1117,8 @@ def get_company_data(request):
             'opening_time': company.opening_time.strftime('%H:%M:%S') if company.opening_time else None,
             'closing_time': company.closing_time.strftime('%H:%M:%S') if company.closing_time else None,
             'closed_days': company.closed_days.split(',') if company.closed_days else [],
+            'category_names': category_names
+
         }
 
         return JsonResponse(data)

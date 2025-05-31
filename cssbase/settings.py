@@ -31,8 +31,7 @@ ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',   # If running locally
     'http://127.0.0.1:8000',    # If running locally
-    'https://3354-2401-4900-628d-6da9-1492-7f44-d128-20d1.ngrok-free.app',
-    'https://eb93-2401-4900-6270-f538-6b0d-4038-96d3-5d0c.ngrok-free.app'
+    'https://8472-2401-4900-6276-83ae-ce01-365-888a-b943.ngrok-free.app',
 ]
 
 AUTH_USER_MODEL ='accounts.CustomUser'
@@ -150,7 +149,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
