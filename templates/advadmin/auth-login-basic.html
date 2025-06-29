@@ -166,10 +166,11 @@
                 </div>
                 <div class="mb-3">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="remember-me" />
+                    <input class="form-check-input" type="checkbox" id="remember-me" name="remember_me" />
                     <label class="form-check-label" for="remember-me"> Remember Me </label>
                   </div>
                 </div>
+
                 <div class="mb-3">
                   <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
                 </div>
@@ -177,6 +178,11 @@
               <div class="mb-3">
                 <a href="{% url 'login_with_otp' %}" class="btn btn-primary d-grid w-100">
                     Login With OTP
+                </a>
+            </div>
+            <div class="mb-3">
+                <a href="{% url 'account_login' %}" class="btn btn-primary d-grid w-100">
+                    Login With Google
                 </a>
             </div>
 

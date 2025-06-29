@@ -83,3 +83,5 @@ websockets==13.1
 yarl==1.19.0
 zope.interface==7.1.1
 python-json-logger==3.3.0
+django-allauth==65.9.0
+

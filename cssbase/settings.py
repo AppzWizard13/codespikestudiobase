@@ -56,6 +56,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # SSO
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +72,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
+    # Required by django-allauth
+    "allauth.account.middleware.AccountMiddleware",  
 ]
 
 ROOT_URLCONF = 'cssbase.urls'
@@ -86,6 +93,18 @@ TEMPLATES = [
         },
     },
 ]
+
+
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+
 WSGI_APPLICATION = 'cssbase.wsgi.application'
 
 
@@ -244,3 +263,47 @@ CASHFREE_SECRET_KEY = 'cfsk_ma_test_e4e237b4ffe10c1921903ceaa995fef0_338e8a4e'
 
 # CASHFREE_APP_ID = os.getenv("CASHFREE_APP_ID")
 # CASHFREE_SECRET_KEY = os.getenv("CASHFREE_SECRET_KEY")
+
+## Google OAuth Settings
+GOOGLE_OAUTH_CLIENT_ID = "410110360495-a4lsnqqvo7vradjdp5l40jmld6e99q5a.apps.googleusercontent.com"
+GOOGLE_OAUTH_CLIENT_SECRET = "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"
+GOOGLE_OAUTH_REDIRECT_URI = "http://localhost:8000/google_sso/callback/"
+GOOGLE_SSO_ALLOWABLE_DOMAINS = []
+# Django-allauth Configuration
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+            'redirect_uri': GOOGLE_OAUTH_REDIRECT_URI  
+        },
+        'APP': {
+            'client_id': GOOGLE_OAUTH_CLIENT_ID,
+            'secret': GOOGLE_OAUTH_CLIENT_SECRET,
+        }
+    }
+}
+
+# {
+#   "web": {
+#     "client_id": "410110360495-a4lsnqqvo7vradjdp5l40jmld6e99q5a.apps.googleusercontent.com",
+#     "project_id": "cssbase-462818",
+#     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+#     "token_uri": "https://oauth2.googleapis.com/token",
+#     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+#     "client_secret": "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",
+#     "redirect_uris": [
+#       "http://127.0.0.1:8000/dashboard/"
+#     ],
+#     "javascript_origins": [
+#       "http://127.0.0.1:8000"
+#     ]
+#   }
+# }
+
+
+# settings.py
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 days
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+

@@ -9,7 +9,7 @@ from .views import (
     DownloadAllMediaView, PasswordResetRequestView, PasswordResetVerifyView, AccountSettingsView,
     ProfileUpdateView, SocialMediaListView, SocialMediaCreateView,CustomerCreateView,
     SocialMediaDetailView, SocialMediaUpdateView, VerifyOTPView, toggle_user_active,BlockedUserListView, UnblockUserView,
-    SocialMediaDeleteView, get_company_data
+    SocialMediaDeleteView, get_company_data, login_redirect, GoogleSSOCallbackView
 )
 
 urlpatterns = [
@@ -80,6 +80,12 @@ urlpatterns = [
     path('login_with_otp/', LoginWithOTPView.as_view(), name='login_with_otp'),
     path('verify_otp/', VerifyOTPView.as_view(), name='verify_otp'),
     path('otp_login_success/', OTPLoginSuccessView.as_view(), name='otp_login_success'),
+
+    
+    path('accounts/login/', login_redirect, name='account_login'),
+    path('google_sso/callback/', GoogleSSOCallbackView.as_view(), name='google_callback'),
+
+
 
 
 

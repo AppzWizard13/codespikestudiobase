@@ -33,6 +33,10 @@ urlpatterns = [
     path('core/', include('core.urls')),
     path('', include('cms.urls')),
     path('', include('payments.urls')),
+    # SSO 
+    path('accounts/', include('allauth.urls')),
+    
+    
     
 ]
 

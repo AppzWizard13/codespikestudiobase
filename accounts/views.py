@@ -25,6 +25,7 @@ from orders.models import Transaction, Order
 from django.utils import timezone
 from datetime import timedelta
 from django.db import models 
+from .forms import UserLoginForm
 
 
 logger = logging.getLogger(__name__)
@@ -97,44 +98,47 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, "User updated successfully.")
         return super().form_valid(form)
 
-from .forms import UserLoginForm
-
 class CustomLoginView(LoginView):
-    # Set default template (will be overridden by get_template_names)
     template_name = "admin_panel/authentication-login.html"
-    form_class = UserLoginForm  # Use custom login form
-    
+    form_class = UserLoginForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('dashboard')
+        return super().dispatch(request, *args, **kwargs)
+
     def get_template_names(self):
-        """
-        Determine which template to use based on ADMIN_PANEL_MODE
-        """
         admin_mode = getattr(settings, 'ADMIN_PANEL_MODE', 'basic').lower()
-        
         if admin_mode == 'advanced':
-            return ['advadmin/auth-login-basic.html']  # Note: Consider renaming to 'auth-login-advanced.html'
+            return ['advadmin/auth-login-basic.html']
         elif admin_mode == 'standard':
-            return ['admin_panel/authentication-login-standard.html']  # More consistent naming
-        else:  # basic or any other value
-            return ['admin_panel/authentication-login-basic.html']  # Changed from index.html to login template
+            return ['admin_panel/authentication-login-standard.html']
+        else:
+            return ['admin_panel/authentication-login-basic.html']
 
     def form_valid(self, form):
-        """Process valid login form"""
         user = form.get_user()
         login(self.request, user)
+
+        # ✅ Remember Me functionality
+        remember_me = self.request.POST.get('remember_me')
+        if not remember_me:
+            self.request.session.set_expiry(0)  # Expires on browser close
+        else:
+            self.request.session.set_expiry(60 * 60 * 24 * 30)  # 30 days
+
         messages.success(self.request, "Login successful!")
-        
-        # Redirect to next URL if provided, otherwise to 'dashboard'
-        redirect_to = self.get_success_url()
-        return redirect(redirect_to)
+        return redirect(self.get_success_url())
 
     def form_invalid(self, form):
-        """Process invalid login form"""
         messages.error(
             self.request,
             "Invalid credentials. Please try again.",
-            extra_tags='danger'  # Adds Bootstrap danger class if using Bootstrap alerts
+            extra_tags='danger'
         )
         return self.render_to_response(self.get_context_data(form=form))
+
+
 
 from django.views.generic import ListView
 from django.db.models import Q
@@ -1323,3 +1327,73 @@ class OTPLoginSuccessView(View):
         if not request.user.is_authenticated:
             return redirect('login_with_otp')
         return redirect('dashboard')
+
+def login_redirect(request):
+    return redirect('/accounts/google/login/?process=login')
+
+
+import requests
+from django.conf import settings
+from django.shortcuts import redirect
+from django.contrib.auth import login
+from django.contrib import messages
+from django.views import View
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
+@method_decorator(csrf_exempt, name='dispatch')
+class GoogleSSOCallbackView(View):
+    def get(self, request):
+        code = request.GET.get('code')
+        if not code:
+            messages.error(request, "Authorization code not found.")
+            return redirect('/login/')
+
+        # Step 1: Exchange code for access token
+        token_url = 'https://oauth2.googleapis.com/token'
+        token_data = {
+            'code': code,
+            'client_id': settings.GOOGLE_OAUTH_CLIENT_ID,
+            'client_secret': settings.GOOGLE_OAUTH_CLIENT_SECRET,
+            'redirect_uri': settings.GOOGLE_OAUTH_REDIRECT_URI,
+            'grant_type': 'authorization_code',
+        }
+
+        token_response = requests.post(token_url, data=token_data)
+        token_json = token_response.json()
+        access_token = token_json.get('access_token')
+
+        if not access_token:
+            messages.error(request, "Failed to retrieve access token.")
+            return redirect('/login/')
+
+        # Step 2: Fetch user info
+        user_info_url = 'https://www.googleapis.com/oauth2/v1/userinfo'
+        user_info_response = requests.get(user_info_url, params={'alt': 'json'}, headers={
+            'Authorization': f'Bearer {access_token}'
+        })
+        user_info = user_info_response.json()
+
+        email = user_info.get('email')
+        name = user_info.get('name')
+
+        if not email:
+            messages.error(request, "Email not found in Google profile.")
+            return redirect('/login/')
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, "User not registered. Please sign up first.")
+            return redirect('/login/')
+
+        # Optional update name
+        if user.first_name != name:
+            user.first_name = name
+            user.save()
+
+        # Important: set backend
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
+
+        return redirect('/dashboard/')

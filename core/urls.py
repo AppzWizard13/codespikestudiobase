@@ -24,3 +24,4 @@ urlpatterns = [
     path('system-reset/', SystemReset.as_view(), name='system_reset'),
 
 ]
+

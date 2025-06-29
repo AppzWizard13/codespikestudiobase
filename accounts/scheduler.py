@@ -20,7 +20,7 @@ def self_ping():
     Function to send GET requests to self-ping multiple server endpoints.
     """
     ping_urls = [
-        'https://xxsapequipments.onrender.com/',
+        'https://sapetindiapvtltd.in/',
         'https://aspinxp.onrender.com/',
         'https://akshaywedsnisha.onrender.com'
     ]

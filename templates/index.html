@@ -2075,9 +2075,7 @@
 				  <ul class="list-unstyled pl-0 ml-0">
 					{% for category in total_categories %}
 					<li class="mb-2 text-left"> <!-- Force left alignment -->
-					  <a href="#" class="py-1 d-block text-decoration-none">
 						<span class="fa fa-check mr-2"></span>{{ category.name }}
-					  </a>
 					</li>
 					{% endfor %}
 				  </ul>
@@ -2174,14 +2172,14 @@
 				li.className = 'mb-2 text-left';
 
 				li.innerHTML = `
-				<a href="#" class="py-1 d-block text-decoration-none">
+				<span  class="py-1 d-block text-decoration-none">
 					<span class="fa fa-check mr-2"></span>${name}
-				</a>
+				</span>
 				`;
 
 				servicesList.appendChild(li);
 			});
-			}
+		}
 		  // ✅ Load company logo
 		  if (data.company_logo_url) {
 			if (logoImg) {
