@@ -22,7 +22,7 @@ def self_ping():
     ping_urls = [
         'https://sapetindiapvtltd.in/',
         'https://aspinxp.onrender.com/',
-        'https://akshaywedsnisha.onrender.com'
+        'https://xxsapequipments-0ln6.onrender.com/'
     ]
     
     for url in ping_urls:
@@ -41,7 +41,7 @@ def start():
     scheduler = BackgroundScheduler()
 
     # Add self-ping to the scheduler, for example, every 15 seconds
-    # scheduler.add_job(self_ping, IntervalTrigger(seconds=15))  # Self-ping every 15 seconds
+    scheduler.add_job(self_ping, IntervalTrigger(seconds=15))  # Self-ping every 15 seconds
     
     # Start the scheduler
     scheduler.start()
