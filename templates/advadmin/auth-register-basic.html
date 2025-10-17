@@ -87,10 +87,10 @@
         padding: 25px 30px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         background: white;
         overflow-y: auto;
-        max-height: 82vh;
+        max-height: 85vh;
       }
 
       .page-title {
@@ -376,23 +376,124 @@
 
       /* Responsive */
       @media (max-width: 968px) {
+        body {
+          padding: 8px;
+          align-items: flex-start;
+          padding-top: 60px;
+        }
+
         .right-panel {
           display: none;
         }
+
         .auth-container {
-          max-width: 520px;
+          max-width: 100%;
+          width: 100%;
+          min-height: auto;
+          margin-top: 0;
         }
+
         .left-panel {
-          padding: 25px 22px;
+          padding: 20px 18px;
+          max-height: none;
+          overflow-y: visible;
         }
+
+        .page-title {
+          font-size: 20px;
+          margin-bottom: 3px;
+        }
+
+        .page-subtitle {
+          font-size: 11px;
+          margin-bottom: 16px;
+        }
+
         .form-row {
           grid-template-columns: 1fr;
+          gap: 8px;
+          margin-bottom: 8px;
         }
+
+        .form-group label {
+          font-size: 10px;
+          margin-bottom: 3px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+          padding: 8px 10px;
+          font-size: 11px;
+        }
+
+        .form-group input[type="password"] {
+          padding-right: 34px;
+        }
+
+        .password-toggle {
+          top: 27px;
+          font-size: 15px;
+        }
+
+        .btn-container {
+          margin-top: 12px;
+          margin-bottom: 10px;
+          gap: 8px;
+        }
+
+        .btn-register,
+        .btn-cancel {
+          padding: 8px;
+          font-size: 12px;
+        }
+
+        .signin-link {
+          font-size: 10px;
+        }
+
         .back-home-btn {
           top: 10px;
           left: 10px;
+          font-size: 10px;
+          padding: 6px 11px;
+        }
+
+        .back-home-btn i {
+          font-size: 13px;
+        }
+
+        .toast-container {
+          top: 10px;
+          right: 10px;
+        }
+
+        .toast {
+          min-width: 200px;
+          font-size: 10px;
+          padding: 9px 12px;
+        }
+      }
+
+      /* Extra small mobile devices */
+      @media (max-width: 480px) {
+        body {
+          padding-top: 55px;
+        }
+
+        .left-panel {
+          padding: 18px 15px;
+        }
+
+        .page-title {
+          font-size: 18px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+          padding: 7px 9px;
           font-size: 11px;
-          padding: 6px 12px;
         }
       }
     </style>
