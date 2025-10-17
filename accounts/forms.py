@@ -84,6 +84,77 @@ class CustomUserForm(UserCreationForm):
         return instance
 
 
+class UserRegistrationForm(UserCreationForm):
+    password1 = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter Password'}),
+        label="Password"
+    )
+    password2 = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
+        label="Confirm Password"
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = [
+            'first_name', 'last_name', 'phone_number', 'email',
+            'address', 'city', 'state', 'pincode', 'date_of_birth', 'gender',
+            'password1', 'password2',
+        ]
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter First Name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Last Name'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Phone Number'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter Email'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter Address', 'rows': 2}),
+            'city': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter City'}),
+            'state': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter State'}),
+            'pincode': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Pincode'}),
+            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}, choices=[
+                ('', 'Select Gender'),
+                ('Male', 'Male'), 
+                ('Female', 'Female'), 
+                ('Other', 'Other')
+            ]),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Make password required for new users
+        if not self.instance or not self.instance.pk:
+            self.fields['password1'].required = True
+            self.fields['password2'].required = True
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+
+        # Auto-generate employee_id
+        if not instance.employee_id:
+            max_employee_id = CustomUser.objects.aggregate(Max('employee_id'))['employee_id__max'] or 0
+            instance.employee_id = max_employee_id + 1
+
+        # Auto-generate username
+        instance.username = f"EMP{str(instance.employee_id).zfill(5)}"
+
+        # Set password
+        if self.cleaned_data.get('password1'):
+            instance.set_password(self.cleaned_data['password1'])
+
+        # Set default values for removed fields
+        if not instance.pk:  # Only for new users
+            instance.is_active = True
+            instance.is_staff = False
+            instance.staff_role = 'Employee'  # Default role
+
+        if commit:
+            instance.save()
+        return instance
+
+
 
 User = get_user_model()
 

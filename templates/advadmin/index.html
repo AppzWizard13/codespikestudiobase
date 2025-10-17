@@ -738,88 +738,134 @@
               </div>
               <!-- /Search -->
 
-              <ul class="navbar-nav flex-row align-items-center ms-auto">
-                <!-- Place this tag where you want the button to render. -->
-                <li class="nav-item lh-1 me-3">
-                  <a class="dropdown-item" href="{% url 'home' %}">
-                    <i class="bx bx-store me-2"></i>
-                    <span class="align-middle">Shop</span>
-                  </a>
-                </li>
+           <ul class="navbar-nav flex-row align-items-center ms-auto">
+  <!-- Shop Link -->
+  <li class="nav-item lh-1 me-3">
+    <a class="dropdown-item" href="{% url 'home' %}">
+      <i class="bx bx-store me-2"></i>
+      <span class="align-middle">Shop</span>
+    </a>
+  </li>
 
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+  <!-- User Dropdown -->
+  <li class="nav-item navbar-dropdown dropdown-user dropdown">
+    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+      <div class="avatar avatar-online" style="position: relative; display: inline-block;">
+        {% if user.profile_image %}
+          <img src="{{ user.profile_image.url }}" 
+               class="rounded-circle border border-2" 
+               style="width: 40px; height: 40px; object-fit: cover;" 
+               alt="Profile Image" 
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        {% endif %}
+        
+        <div class="avatar-initials" 
+             style="width: 40px; height: 40px; display: {% if user.profile_image %}none{% else %}flex{% endif %}; align-items: center; justify-content: center; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; font-weight: 600; font-size: 16px; border-radius: 50%; border: 2px solid #e2e8f0;">
+          {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+        </div>
+        
+        <span class="status-indicator {% if user.is_active %}online{% else %}offline{% endif %}"></span>
+      </div>
+    </a>
+
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a class="dropdown-item" href="#">
+                <div class="d-flex">
+                  <div class="flex-shrink-0 me-3">
                     <div class="avatar avatar-online" style="position: relative; display: inline-block;">
-                      <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}{% static 'advadmin/assets/img/avatars/default-avatar.png' %}{% endif %}" 
-                           class="rounded-circle border border-2" 
-                           style="width: 40px; height: 40px; object-fit: cover;" 
-                           alt="Profile Image" />
-                      <span class="status-indicator {% if user.is_active %}online{% else %}offline{% endif %}"></span>
+                      {% if user.profile_image %}
+                        <img src="{{ user.profile_image.url }}"
+                            class="rounded-circle border border-2" 
+                            style="width: 40px; height: 40px; object-fit: cover;" 
+                            alt="Profile Image"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      {% endif %}
+                      
+                      <div class="avatar-initials" 
+                          style="width: 40px; height: 40px; display: {% if user.profile_image %}none{% else %}flex{% endif %}; align-items: center; justify-content: center; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; font-weight: 600; font-size: 16px; border-radius: 50%; border: 2px solid #e2e8f0;">
+                        {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+                      </div>
+                    </div>
                   </div>
-                  
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <div class="d-flex">
-                          <div class="flex-shrink-0 me-3">
-                            <div class="avatar avatar-online">
-                              <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}{% static 'advadmin/assets/img/avatars/default-avatar.png' %}{% endif %}"
-                              class="rounded-circle border border-2" 
-                              style="width: 40px; height: 40px; object-fit: cover;" 
-                              alt="Profile Image" />
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">{{request.user.first_name}} {{request.user.last_name}}</span>
-                            <small class="text-muted">{{user.staff_role}}</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'home' %}">
-                        <i class="bx bx-store me-2"></i>
-                        <span class="align-middle">Shop</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'account_settings' %}">
-                        <i class="bx bx-user me-2"></i>
-                        <span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'business_details' %}">
-                        <i class="bx bx-cog me-2"></i>
-                        <span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'configuration_list' %}">
-                        <span class="d-flex align-items-center align-middle">
-                          <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                          <span class="flex-grow-1 align-middle">Website Settings</span>
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'logout' %}">
-                        <i class="bx bx-power-off me-2"></i>
-                        <span class="align-middle">Log Out</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
+                  <div class="flex-grow-1">
+                    <span class="fw-semibold d-block">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                    <small class="text-muted">{{ user.staff_role }}</small>
+                  </div>
+                </div>
+              </a>
+            </li>
+            
+            <li>
+              <div class="dropdown-divider"></div>
+            </li>
+            
+            <li>
+              <a class="dropdown-item" href="{% url 'home' %}">
+                <i class="bx bx-store me-2"></i>
+                <span class="align-middle">Shop</span>
+              </a>
+            </li>
+            
+            <li>
+              <a class="dropdown-item" href="{% url 'account_settings' %}">
+                <i class="bx bx-user me-2"></i>
+                <span class="align-middle">My Profile</span>
+              </a>
+            </li>
+            
+            <li>
+              <a class="dropdown-item" href="{% url 'business_details' %}">
+                <i class="bx bx-cog me-2"></i>
+                <span class="align-middle">Settings</span>
+              </a>
+            </li>
+            
+            <li>
+              <a class="dropdown-item" href="{% url 'configuration_list' %}">
+                <span class="d-flex align-items-center align-middle">
+                  <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                  <span class="flex-grow-1 align-middle">Website Settings</span>
+                </span>
+              </a>
+            </li>
+            
+            <li>
+              <div class="dropdown-divider"></div>
+            </li>
+            
+            <li>
+              <a class="dropdown-item" href="{% url 'logout' %}">
+                <i class="bx bx-power-off me-2"></i>
+                <span class="align-middle">Log Out</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <style>
+        .status-indicator {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          border: 2px solid #fff;
+        }
+        
+        .status-indicator.online {
+          background-color: #10b981;
+        }
+        
+        .status-indicator.offline {
+          background-color: #6b7280;
+        }
+      </style>
+
+
+
             </div>
           </nav>
 

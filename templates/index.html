@@ -628,6 +628,7 @@
 												<i class="sr-only">Google</i>
 											</span>
 										</a>
+
 									</p>
 								</div>
 							</div>
@@ -2125,185 +2126,213 @@
 	  </footer>
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-  <script>
-	document.addEventListener('DOMContentLoaded', function() {
-	  const logoImg = document.getElementById('company-logo-svg');
-	  const logoFooterImg = document.getElementById('company-footer-logo-svg');
-	  const loader = document.getElementById('logo-loader');
-	  const footerloader = document.getElementById('logo-footer-loader');
-	  const faviconLink = document.querySelector("link[rel='icon']");
-	  const openingDays = document.getElementById('opening-hours');
-	  const holiday = document.getElementById('holiday-info');
-	  const gstn = document.getElementById('gstn');
-	  const contactName = document.getElementById('contact-name');
-	  const page_title = document.getElementById('page-title');
-	  const contactAddress = document.getElementById('contact-address');
-	  const contactAddressFooter = document.getElementById('contact-address-footer');
-	  const contactGstin = document.getElementById('contact-gstin');
-	  const contactPhone = document.getElementById('contact-phone');
-	  const info_mobile = document.getElementById('info-mobile');
-	  const wtinfo_mobile = document.getElementById('wtinfo-mobile');
-	  const wtinfo_mobile_text = document.getElementById('wtinfo-mobile-text');
-	  const contactEmail = document.getElementById('contact-email');
-	  const companyTagline = document.getElementById('company-tagline');
-	  const facebookLink = document.getElementById('facebook-link');
-	  const instagramLink = document.getElementById('instagram-link');
-	  const googleLink = document.getElementById('google-link');
-	  const facebookLinkfooter = document.getElementById('facebook-link-footer');
-	  const instagramLinkfooter = document.getElementById('instagram-link-footer');
-	  const googleLinkfooter = document.getElementById('google-link-footer');
-	  const breadcrumbHero = document.getElementById('breadcrumb-hero');
-	  const aboutPageImageHome = document.getElementById('about-page-image-home');
-	  const aboutPageImage = document.getElementById('about-page-image');
-	
-	  fetch('/api/company-data/')
-		.then(response => response.json())
-		.then(data => {
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+		const logoImg = document.getElementById('company-logo-svg');
+		const logoFooterImg = document.getElementById('company-footer-logo-svg');
+		const loader = document.getElementById('logo-loader');
+		const footerloader = document.getElementById('logo-footer-loader');
+		const faviconLink = document.querySelector("link[rel='icon']");
+		const openingDays = document.getElementById('opening-hours');
+		const holiday = document.getElementById('holiday-info');
+		const gstn = document.getElementById('gstn');
+		const contactName = document.getElementById('contact-name');
+		const page_title = document.getElementById('page-title');
+		const contactAddress = document.getElementById('contact-address');
+		const contactAddressFooter = document.getElementById('contact-address-footer');
+		const contactGstin = document.getElementById('contact-gstin');
+		const contactPhone = document.getElementById('contact-phone');
+		const info_mobile = document.getElementById('info-mobile');
+		const wtinfo_mobile = document.getElementById('wtinfo-mobile');
+		const wtinfo_mobile_text = document.getElementById('wtinfo-mobile-text');
+		const contactEmail = document.getElementById('contact-email');
+		const companyTagline = document.getElementById('company-tagline');
+		const facebookLink = document.getElementById('facebook-link');
+		const instagramLink = document.getElementById('instagram-link');
+		const googleLink = document.getElementById('google-link');
+		const facebookLinkfooter = document.getElementById('facebook-link-footer');
+		const instagramLinkfooter = document.getElementById('instagram-link-footer');
+		const googleLinkfooter = document.getElementById('google-link-footer');
+		const breadcrumbHero = document.getElementById('breadcrumb-hero');
+		const aboutPageImageHome = document.getElementById('about-page-image-home');
+		const aboutPageImage = document.getElementById('about-page-image');
+		
+		fetch('/api/company-data/')
+			.then(response => response.json())
+			.then(data => {
 			// Load Category Name
 			console.log("data.category_names", data.category_names);
 
 			const servicesList = document.querySelector('.services-list ul');
 
 			if (servicesList && data.category_names && Array.isArray(data.category_names)) {
-			servicesList.innerHTML = ''; // Clear any existing content
+				servicesList.innerHTML = ''; // Clear any existing content
 
-			data.category_names.forEach(name => {
+				data.category_names.forEach(name => {
 				const li = document.createElement('li');
 				li.className = 'mb-2 text-left';
 
 				li.innerHTML = `
-				<span  class="py-1 d-block text-decoration-none">
+					<span class="py-1 d-block text-decoration-none">
 					<span class="fa fa-check mr-2"></span>${name}
-				</span>
+					</span>
 				`;
 
 				servicesList.appendChild(li);
-			});
-		}
-		  // ✅ Load company logo
-		  if (data.company_logo_url) {
-			if (logoImg) {
-			  logoImg.src = data.company_logo_url;
-			  logoImg.alt = data.company_name + " Logo";
-			  logoImg.style.display = "block";
+				});
 			}
-			if (logoFooterImg) {
-			  logoFooterImg.src = data.company_logo_url;
-			  logoFooterImg.alt = data.company_name + " Logo";
-			  logoFooterImg.style.display = "block";
-			}
-			if (loader) loader.style.display = "none";
-			if (footerloader) footerloader.style.display = "none";
-		  } else {
-			if (loader) loader.innerHTML = "No Logo Available";
-			if (footerloader) footerloader.innerHTML = "No Logo Available";
-		  }
-	
-		  if (data.breadcrumb_image_url && breadcrumbHero) {
-			breadcrumbHero.style.backgroundImage = `url('${data.breadcrumb_image_url}')`;
-		  }
-	
-		  if (data.about_page_image_url) {
-			if (aboutPageImage) {
-			  aboutPageImage.style.backgroundImage = `url('${data.about_page_image_url}')`;
-			}
-			if (aboutPageImageHome) {
-			  aboutPageImageHome.style.backgroundImage = `url('${data.about_page_image_url}')`;
-			}
-		  }
-	
-		  // ✅ Load favicon
-		  if (data.company_favicon_url && faviconLink) {
-			faviconLink.href = data.company_favicon_url;
-		  }
-	
-		  // ✅ Update business hours
-		  if (data.opening_time && data.closing_time && data.closed_days) {
-			let openingDaysText = '';
-			let holidayText = '';
-	
-			openingDaysText += `<span>Monday – Friday : ${data.opening_time} to ${data.closing_time}</span><br>`;
-			openingDaysText += `<span>Saturday : ${data.opening_time} to ${data.closing_time}</span>`;
-	
-			if (data.closed_days.length > 0) {
-			  holidayText += `<span>All ${data.closed_days.join(', ')}</span><br>`;
+
+			// ✅ Load company logo
+			if (data.company_logo_url) {
+				if (logoImg) {
+				logoImg.src = data.company_logo_url;
+				logoImg.alt = data.company_name + " Logo";
+				logoImg.style.display = "block";
+				}
+				if (logoFooterImg) {
+				logoFooterImg.src = data.company_logo_url;
+				logoFooterImg.alt = data.company_name + " Logo";
+				logoFooterImg.style.display = "block";
+				}
+				if (loader) loader.style.display = "none";
+				if (footerloader) footerloader.style.display = "none";
 			} else {
-			  holidayText += `<span>No holidays</span><br>`;
+				if (loader) loader.innerHTML = "No Logo Available";
+				if (footerloader) footerloader.innerHTML = "No Logo Available";
 			}
-	
-			if (openingDays) openingDays.innerHTML = openingDaysText;
-			if (holiday) holiday.innerHTML = holidayText;
-		  } else {
-			if (openingDays) openingDays.innerHTML = '<span>No opening hours available</span>';
-			if (holiday) holiday.innerHTML = '<span>No holiday information available</span>';
-		  }
-	
-		  // ✅ Update contact info
-		  if (data.company_name) {
-			if (contactName) contactName.textContent = data.company_name;
-			if (page_title) page_title.textContent = data.company_name;
-		  }
-		  if (data.gstn && gstn) {
-			gstn.textContent = data.gstn;
-		  }
-		  console.log('data.company_addressdata.company_addressdata.company_address', data.company_address)
-		  if (data.company_address && contactAddress) {
-			contactAddress.textContent = data.company_address;
-			contactAddressFooter.textContent = data.company_address;
-		  }
-		  if (data.company_gstin && contactGstin) {
-			contactGstin.textContent = data.company_gstin;
-		  }
-		  if (data.info_mobile) {
-			const sanitizedNumber = data.info_mobile.replace(/\D/g, '');
-			info_mobile.textContent = data.info_mobile;
-			if (wtinfo_mobile) wtinfo_mobile.href = `https://wa.me/+${sanitizedNumber}`;
-			if (contactPhone) contactPhone.href = `tel:+${sanitizedNumber}`;
-		  }
-		  if (data.info_email && contactEmail) {
-			contactEmail.textContent = data.info_email;
-		  }
-	
-		  // ✅ Update tagline
-		  if (companyTagline) {
-			companyTagline.innerHTML = data.company_tagline ? `<b>${data.company_tagline}</b>` : '<b>No tagline available</b>';
-		  }
-	
-		  // ✅ Update social media
-		  if (data.company_facebook && facebookLink) {
-			console.log('data.company_facebook', data.company_facebook)
-			facebookLink.href = data.company_facebook;
-			facebookLinkfooter.href = data.company_facebook;
+		
+			// ✅ Load breadcrumb background image
+			if (data.breadcrumb_image_url && breadcrumbHero) {
+				breadcrumbHero.style.backgroundImage = `url('${data.breadcrumb_image_url}')`;
+			}
+		
+			// ✅ Load about page image
+			if (data.about_page_image_url) {
+				if (aboutPageImage) {
+				aboutPageImage.style.backgroundImage = `url('${data.about_page_image_url}')`;
+				}
+				if (aboutPageImageHome) {
+				aboutPageImageHome.style.backgroundImage = `url('${data.about_page_image_url}')`;
+				}
+			}
+		
+			// ✅ Load favicon
+			if (data.company_favicon_url && faviconLink) {
+				faviconLink.href = data.company_favicon_url;
+			}
+		
+			// ✅ Update business hours
+			if (data.opening_time && data.closing_time && data.closed_days) {
+				let openingDaysText = '';
+				let holidayText = '';
+		
+				openingDaysText += `<span>Monday – Friday : ${data.opening_time} to ${data.closing_time}</span><br>`;
+				openingDaysText += `<span>Saturday : ${data.opening_time} to ${data.closing_time}</span>`;
+		
+				if (data.closed_days.length > 0) {
+				holidayText += `<span>All ${data.closed_days.join(', ')}</span><br>`;
+				} else {
+				holidayText += `<span>No holidays</span><br>`;
+				}
+		
+				if (openingDays) openingDays.innerHTML = openingDaysText;
+				if (holiday) holiday.innerHTML = holidayText;
+			} else {
+				if (openingDays) openingDays.innerHTML = '<span>No opening hours available</span>';
+				if (holiday) holiday.innerHTML = '<span>No holiday information available</span>';
+			}
+		
+			// ✅ Update contact info
+			if (data.company_name) {
+				if (contactName) contactName.textContent = data.company_name;
+				if (page_title) page_title.textContent = data.company_name;
+			}
 			
-		  }
-		  if (data.company_instagram && instagramLink) {
-			console.log('data.company_instagram', data.company_instagram)
-			instagramLink.href = data.company_instagram;
-			instagramLinkfooter.href = data.company_instagram;
-		  }
-		  if (data.company_email_ceo && googleLink) {
-			googleLink.href = data.company_email_ceo;
-			googleLinkfooter.href = data.company_email_ceo;
-		  }
-		})
-		.catch(error => {
-		  console.error('Error fetching company data:', error);
-		  if (loader) loader.innerHTML = "Failed to load logo";
-		  if (footerloader) footerloader.innerHTML = "Failed to load logo";
-		  if (openingDays) openingDays.innerHTML = '<span>Failed to load opening hours</span>';
-		  if (holiday) holiday.innerHTML = '<span>Failed to load holiday information</span>';
-		  if (contactName) contactName.textContent = 'Failed to load contact name';
-		  if (contactAddress) contactAddress.textContent = 'Failed to load contact address';
-		  if (contactGstin) contactGstin.textContent = 'Failed to load GSTIN';
-		  if (contactPhone) contactPhone.textContent = 'Failed to load phone number';
-		  if (contactEmail) contactEmail.textContent = 'Failed to load email address';
-		  if (companyTagline) companyTagline.innerHTML = '<b>Failed to load tagline</b>';
-		  if (facebookLink) facebookLink.href = '#';
-		  if (instagramLink) instagramLink.href = '#';
-		  if (googleLink) googleLink.href = '#';
+			if (data.gstn && gstn) {
+				gstn.textContent = data.gstn;
+			}
+			
+			console.log('data.company_address:', data.company_address);
+			if (data.company_address) {
+				if (contactAddress) contactAddress.textContent = data.company_address;
+				if (contactAddressFooter) contactAddressFooter.textContent = data.company_address;
+			}
+			
+			if (data.company_gstin && contactGstin) {
+				contactGstin.textContent = data.company_gstin;
+			}
+			
+			// ✅ Update phone numbers with proper links
+			if (data.info_mobile) {
+				const sanitizedNumber = data.info_mobile.replace(/\D/g, '');
+				if (info_mobile) info_mobile.textContent = data.info_mobile;
+				if (wtinfo_mobile) wtinfo_mobile.href = `https://wa.me/${sanitizedNumber}`;
+				if (contactPhone) contactPhone.href = `tel:+${sanitizedNumber}`;
+			}
+			
+			// ✅ Update email
+			if (data.info_email && contactEmail) {
+				contactEmail.textContent = data.info_email;
+				contactEmail.href = `mailto:${data.info_email}`;
+			}
+		
+			// ✅ Update tagline
+			if (companyTagline) {
+				companyTagline.innerHTML = data.company_tagline ? `<b>${data.company_tagline}</b>` : '<b>No tagline available</b>';
+			}
+		
+			// ✅ Update social media links
+			if (data.company_facebook) {
+				console.log('data.company_facebook:', data.company_facebook);
+				if (facebookLink) facebookLink.href = data.company_facebook;
+				if (facebookLinkfooter) facebookLinkfooter.href = data.company_facebook;
+			}
+			
+			if (data.company_instagram) {
+				console.log('data.company_instagram:', data.company_instagram);
+				if (instagramLink) instagramLink.href = data.company_instagram;
+				if (instagramLinkfooter) instagramLinkfooter.href = data.company_instagram;
+			}
+			
+			// ✅ Update Google/Email link with mailto:
+			if (data.company_email_ceo) {
+				if (googleLink) {
+				googleLink.href = `mailto:${data.company_email_ceo}`;
+				googleLink.title = `Email us at ${data.company_email_ceo}`;
+				}
+				if (googleLinkfooter) {
+				googleLinkfooter.href = `mailto:${data.company_email_ceo}`;
+				googleLinkfooter.title = `Email us at ${data.company_email_ceo}`;
+				}
+			}
+			})
+			.catch(error => {
+			console.error('Error fetching company data:', error);
+			
+			// Fallback error handling
+			if (loader) loader.innerHTML = "Failed to load logo";
+			if (footerloader) footerloader.innerHTML = "Failed to load logo";
+			if (openingDays) openingDays.innerHTML = '<span>Failed to load opening hours</span>';
+			if (holiday) holiday.innerHTML = '<span>Failed to load holiday information</span>';
+			if (contactName) contactName.textContent = 'Failed to load contact name';
+			if (contactAddress) contactAddress.textContent = 'Failed to load contact address';
+			if (contactAddressFooter) contactAddressFooter.textContent = 'Failed to load contact address';
+			if (contactGstin) contactGstin.textContent = 'Failed to load GSTIN';
+			if (contactPhone) contactPhone.textContent = 'Failed to load phone number';
+			if (contactEmail) contactEmail.textContent = 'Failed to load email address';
+			if (companyTagline) companyTagline.innerHTML = '<b>Failed to load tagline</b>';
+			
+			// Set fallback links
+			if (facebookLink) facebookLink.href = '#';
+			if (facebookLinkfooter) facebookLinkfooter.href = '#';
+			if (instagramLink) instagramLink.href = '#';
+			if (instagramLinkfooter) instagramLinkfooter.href = '#';
+			if (googleLink) googleLink.href = 'mailto:info@example.com';
+			if (googleLinkfooter) googleLinkfooter.href = 'mailto:info@example.com';
+			});
 		});
-	});
 	</script>
+
 	
   <script>
 	document.addEventListener('DOMContentLoaded', function() {

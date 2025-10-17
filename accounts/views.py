@@ -16,7 +16,7 @@ from core.models import BusinessDetails, Configuration
 from products.models import Product, Category, subcategory
 from enquiry.models import Enquiry
 from .models import CustomUser, Banner, Review
-from .forms import CustomUserForm, CustomerRegistrationForm, ReviewForm, BannerForm, ProfileUpdateForm
+from .forms import CustomUserForm, CustomerRegistrationForm, ReviewForm, BannerForm, ProfileUpdateForm, UserRegistrationForm
 from django.contrib.auth import logout, login
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
@@ -35,7 +35,7 @@ CustomUser = get_user_model()
 
 class UserCreateView(CreateView):
     model = CustomUser
-    form_class = CustomUserForm
+    form_class = UserRegistrationForm
     success_url = reverse_lazy('user_list')
 
     def get_template_names(self):
@@ -728,29 +728,46 @@ class DownloadDatabaseView(LoginRequiredMixin, View):
             return response
         return HttpResponse("Database file not found.", status=404)
 
+import tempfile
+import shutil
+
 class DownloadAllMediaView(LoginRequiredMixin, View):
     def get(self, request):
+        temp_zip = None
         try:
-            memory_buffer = BytesIO()
-            with zipfile.ZipFile(memory_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            # Create temporary zip file
+            temp_zip = tempfile.NamedTemporaryFile(delete=False, suffix='.zip')
+            
+            with zipfile.ZipFile(temp_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
                 media_root = str(settings.MEDIA_ROOT)
                 for root, _, files in os.walk(media_root):
                     for file in files:
                         file_path = os.path.join(root, file)
-                        if file_path.startswith(media_root):
-                            arcname = os.path.relpath(file_path, media_root)
-                            zipf.write(file_path, arcname)
-
-            memory_buffer.seek(0)
-            response = HttpResponse(memory_buffer.getvalue(), content_type='application/zip')
+                        try:
+                            if os.path.exists(file_path):
+                                arcname = os.path.relpath(file_path, media_root)
+                                zipf.write(file_path, arcname)
+                        except (FileNotFoundError, PermissionError):
+                            continue
+            
+            temp_zip.seek(0)
+            response = HttpResponse(
+                temp_zip.read(),
+                content_type='application/zip'
+            )
             response['Content-Disposition'] = 'attachment; filename="all_media_files.zip"'
-            memory_buffer.close()
+            
             return response
             
         except Exception as e:
-            if 'memory_buffer' in locals():
-                memory_buffer.close()
-            return HttpResponse(f"Error creating archive: {str(e)}", status=500, content_type='text/plain')
+            return HttpResponse(
+                f"Error creating archive: {str(e)}", 
+                status=500
+            )
+        finally:
+            if temp_zip:
+                temp_zip.close()
+                os.unlink(temp_zip.name)  # Delete temp file
         
 from django.shortcuts import render, redirect
 from django.contrib import messages
