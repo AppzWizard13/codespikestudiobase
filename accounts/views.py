@@ -190,7 +190,7 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 # Home Page View
 class HomePageView(TemplateView):
-    template_name = "index.html"
+    template_name = "mob/index.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         total_categories = Category.objects.all().prefetch_related('products')

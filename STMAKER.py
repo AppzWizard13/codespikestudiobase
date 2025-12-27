@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
 
 
-#  python STMAKER.py "C:\Users\Appz\Desktop\CSSBASE\cssbase\templates\advadmin\auth-forgot-password-basic.html" "C:\Users\Appz\Desktop\CSSBASE\cssbase\static\advadmin"
+#  python STMAKER.py "C:\Users\Appz\Desktop\mobbase\mobbase\templates\advadmin\auth-forgot-password-basic.html" "C:\Users\Appz\Desktop\mobbase\mobbase\static\advadmin"
 
 
-# python STMAKER.py "C:\Users\Appz\Desktop\CSSBASE\cssbase\templates\advadmin\pages-account-settings-account.html" "C:\Users\Appz\Desktop\CSSBASE\cssbase\static\advadmin"
+# python STMAKER.py "C:\Users\Appz\Desktop\mobbase\mobbase\templates\advadmin\pages-account-settings-account.html" "C:\Users\Appz\Desktop\mobbase\mobbase\static\advadmin"
