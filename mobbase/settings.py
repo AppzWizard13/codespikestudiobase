@@ -220,7 +220,7 @@ if USE_CLOUDINARY:
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
     
     CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': 'mobbase',
+        'CLOUD_NAME': 'cssbase',
         'API_KEY': '628779972621648',
         'API_SECRET': 'sNLM0EYtycdFW5xmFx63_Prqn4k'
     }
