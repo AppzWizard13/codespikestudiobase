@@ -190,6 +190,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# NO trailing slash for Render
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 
 # MEDIAFILE
 MEDIA_URL = '/media/'
@@ -210,17 +214,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 USERNAME_PREFIX = "EMP"
 
-STATICFILES_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+USE_CLOUDINARY=True
+if USE_CLOUDINARY:
+    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': 'mobbase',
+        'API_KEY': '628779972621648',
+        'API_SECRET': 'sNLM0EYtycdFW5xmFx63_Prqn4k'
+    }
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'mobbase',
-    'API_KEY': '628779972621648',
-    'API_SECRET': 'sNLM0EYtycdFW5xmFx63_Prqn4k'
-}
-
-
 ADMIN_PANEL_MODE = 'advanced'  # basic/standard/advanced
 ANONYMOUS_USER_CREATION = False
 SEND_EMAIL = True
