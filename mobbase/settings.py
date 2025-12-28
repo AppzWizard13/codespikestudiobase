@@ -65,6 +65,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -182,52 +183,12 @@ LOGIN_REDIRECT_URL = '/dashboard/'  # Redirects to dashboard after login
 LOGOUT_REDIRECT_URL = '/login/'  # Redirects to login page after logout
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# NO trailing slash for Render
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-
-# MEDIAFILE
-MEDIA_URL = '/media/'
-
-
-MEDIA_DIRS = [ os.path.join(BASE_DIR, 'media') ]
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
-USERNAME_PREFIX = "EMP"
-
-USE_CLOUDINARY=True
-if USE_CLOUDINARY:
-    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': 'cssbase',
-        'API_KEY': '628779972621648',
-        'API_SECRET': 'sNLM0EYtycdFW5xmFx63_Prqn4k'
-    }
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ADMIN_PANEL_MODE = 'advanced'  # basic/standard/advanced
+USERNAME_PREFIX = "EMP"
 ANONYMOUS_USER_CREATION = False
 SEND_EMAIL = True
 SEND_MESSAGE = True
@@ -317,3 +278,26 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 days
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 
+
+
+# Static files - ALWAYS WhiteNoise (fast + reliable)
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # FIXED: Always defined
+
+# Media files - Conditional Cloudinary (images/videos only)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Cloudinary config (MEDIA ONLY - env vars)
+USE_CLOUDINARY = os.getenv('USE_CLOUDINARY', 'False').lower() == 'true'
+
+if USE_CLOUDINARY:
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'  # MEDIA ONLY
+    
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME', 'mobbbase'),
+        'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+        'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+    }
