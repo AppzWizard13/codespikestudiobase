@@ -23,7 +23,8 @@ def self_ping():
         'https://sapetindiapvtltd.in/',
         'https://aspinxp.onrender.com/',
         'https://sapetquipments.onrender.com/',
-        'https://iron-board.onrender.com/'
+        'https://iron-board.onrender.com/',
+        'https://william-weds-aiswarya.onrender.com/'
 
     ]
     
