@@ -22,7 +22,7 @@ def self_ping():
     ping_urls = [
         'https://sapetindiapvtltd.in/',
         'https://aspinxp.onrender.com/',
-        'https://sapetquipments.onrender.com/',
+        'https://sapetquipments-pv8x.onrender.com/',
         'https://iron-board.onrender.com/',
         'https://william-weds-aiswarya.onrender.com/'
 
