@@ -24,7 +24,8 @@ def self_ping():
         'https://aspinxp.onrender.com/',
         'https://sapetquipments-pv8x.onrender.com/',
         'https://iron-board.onrender.com/',
-        'https://william-weds-aiswarya.onrender.com/'
+        'https://william-weds-aiswarya.onrender.com/',
+        'https://xxsapequipments-0ln6.onrender.com'
 
     ]
     
